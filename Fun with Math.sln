@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fun with Math", "Fun with Math\Fun with Math.vcxproj", "{222E5078-900A-40C3-9233-5CABBC2009FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Debug|x64.ActiveCfg = Debug|x64
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Debug|x64.Build.0 = Debug|x64
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Debug|x86.ActiveCfg = Debug|Win32
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Debug|x86.Build.0 = Debug|Win32
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Release|x64.ActiveCfg = Release|x64
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Release|x64.Build.0 = Release|x64
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Release|x86.ActiveCfg = Release|Win32
+		{222E5078-900A-40C3-9233-5CABBC2009FA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D261B0F7-A1E0-48CD-B150-5D7D499ED810}
+	EndGlobalSection
+EndGlobal
