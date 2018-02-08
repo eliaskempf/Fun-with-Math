@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Ackermann.hpp" />
     <ClInclude Include="Fibonacci.hpp" />
+    <ClInclude Include="Primes.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="threeNplusOne.hpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="Ackermann.cpp" />
     <ClCompile Include="Fibonacci.cpp" />
     <ClCompile Include="Fun with Math.cpp" />
+    <ClCompile Include="Primes.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

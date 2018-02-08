@@ -39,6 +39,9 @@
     <ClInclude Include="Ackermann.hpp">
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="Primes.hpp">
+      <Filter>Headerdateien\MathHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +60,9 @@
       <Filter>Quelldateien\MathSourceFiles</Filter>
     </ClCompile>
     <ClCompile Include="Fibonacci.cpp">
+      <Filter>Quelldateien\MathSourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Primes.cpp">
       <Filter>Quelldateien\MathSourceFiles</Filter>
     </ClCompile>
   </ItemGroup>
