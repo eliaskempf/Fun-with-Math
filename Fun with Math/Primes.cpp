@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include <iostream>
 #include <vector>
+#include <map>
 
 
 bool isPrime(int n) {
@@ -23,8 +25,7 @@ void fillPrimes(std::vector<int>& primes, int n) {
 	}
 }
 
-std::vector<int> sieveOfEratosthenes(int n) {
-	std::vector<int> primes; 
+void sieveOfEratosthenes(std::vector<int>& primes, int n) {
 	bool* arr = new bool [n];
 
 	for (int i = 0; i < n; i++) {
@@ -52,5 +53,42 @@ std::vector<int> sieveOfEratosthenes(int n) {
 	primes.erase(primes.begin());
 
 	delete[] arr;
-	return primes;
+}
+
+void primeFactorisation(int n) {
+	int num = n;
+	std::map<int, int> primeFactors;
+	std::map<int, int>::iterator factor;
+	std::vector<int> primes;
+
+	sieveOfEratosthenes(primes, num / 2);
+
+	for (auto i = primes.end(); i >= primes.begin(); i--) {
+		while (num % *i == 0) {
+			num /= *i;
+			factor = primeFactors.find(*i);
+			if (factor != primeFactors.end()) {
+				factor->second++;
+			}
+			else {
+				primeFactors.insert(std::pair<int, int>(*i, 1));
+			}
+		}
+	}
+	
+
+	std::cout << "Prime factorisation of " << n << " := " << std::flush;
+
+	for (auto i = primeFactors.begin(); i != primeFactors.end(); i++) {
+		if (i != primeFactors.begin()) {
+			std::cout << " * " << std::flush;
+		}
+		std::cout << i->first << "^" << i->second << std::flush;
+	}
+
+	if (primeFactors.begin() == primeFactors.end()) {
+		std::cout << n << "^1" << std::endl;
+	}
+	
+	std::cout << std::endl;
 }
