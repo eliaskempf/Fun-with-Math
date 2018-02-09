@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include <vector>
-#include <iostream>
-#include <cmath>
-#include <set>
 
 
 bool isPrime(int n) {
