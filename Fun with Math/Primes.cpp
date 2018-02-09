@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include <vector>
+#include <iostream>
+#include <cmath>
+#include <set>
+
 
 bool isPrime(int n) {
 	if (n < 2 || n == 4) {
@@ -11,6 +15,7 @@ bool isPrime(int n) {
 			return false;
 		}
 	}
+	return true;
 }
 
 void fillPrimes(std::vector<int>& primes, int n) {
@@ -22,22 +27,33 @@ void fillPrimes(std::vector<int>& primes, int n) {
 }
 
 std::vector<int> sieveOfEratosthenes(int n) {
-	std::vector<int> primes;
-	std::vector<int> numbers;
+	std::vector<int> primes; 
+	bool* arr = new bool [n];
 
-	for (int i = 2; i <= n; i++) {
-		numbers.push_back(i);
+	for (int i = 0; i < n; i++) {
+		arr[i] = true;
 	}
 
-	while (numbers.size() > 0) {
-		int num = numbers.front();
-		primes.push_back(num);
-		for (int i = 0; i < numbers.size(); i++) {
-			if (numbers[i] % num == 0) {
-				numbers.erase(numbers.begin() + i);
+	int sqrtN = sqrt(n);
+
+	for (int i = 2; i <= sqrtN; i++) {
+		if (arr[i]) {
+			for (int j = i * i; j < n; j += (i > 2 ? i * 2 : i)) {
+				arr[j] = false;
 			}
 		}
 	}
 
+	
+	for (int i = 0; i < n; i++) {
+		if (arr[i]) {
+			primes.push_back(i);
+		}
+	}
+	
+	primes.erase(primes.begin());
+	primes.erase(primes.begin());
+
+	delete[] arr;
 	return primes;
 }
