@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ackermann.hpp" />
+    <ClInclude Include="Factorial.hpp" />
     <ClInclude Include="Fibonacci.hpp" />
     <ClInclude Include="Primes.hpp" />
     <ClInclude Include="stdafx.h" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ackermann.cpp" />
+    <ClCompile Include="Factorial.cpp" />
     <ClCompile Include="Fibonacci.cpp" />
     <ClCompile Include="Fun with Math.cpp" />
     <ClCompile Include="Primes.cpp" />
