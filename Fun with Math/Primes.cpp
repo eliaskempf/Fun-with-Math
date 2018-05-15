@@ -32,7 +32,7 @@ void sieveOfEratosthenes(std::vector<int>& primes, int n) {
 		arr[i] = true;
 	}
 
-	int sqrtN = sqrt(n);
+	int sqrtN = static_cast<int>(sqrt(n));
 
 	for (int i = 2; i <= sqrtN; i++) {
 		if (arr[i]) {

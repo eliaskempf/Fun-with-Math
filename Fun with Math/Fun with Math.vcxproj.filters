@@ -45,6 +45,15 @@
     <ClInclude Include="Factorial.hpp">
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
+    <ClInclude Include="LinearAlgebra.hpp">
+      <Filter>Headerdateien\MathHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.hpp">
+      <Filter>Headerdateien\MathHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.hpp">
+      <Filter>Headerdateien\MathHeaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

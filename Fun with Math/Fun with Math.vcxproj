@@ -150,11 +150,14 @@
     <ClInclude Include="Ackermann.hpp" />
     <ClInclude Include="Factorial.hpp" />
     <ClInclude Include="Fibonacci.hpp" />
+    <ClInclude Include="LinearAlgebra.hpp" />
+    <ClInclude Include="Matrix.hpp" />
     <ClInclude Include="Primes.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="threeNplusOne.hpp" />
     <ClInclude Include="tnpo_parallel.hpp" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ackermann.cpp" />
