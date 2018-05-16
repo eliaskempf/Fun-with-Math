@@ -23,7 +23,7 @@ unsigned long long fib_it(unsigned int n) {
 	unsigned long long fib1 = 1;
 	unsigned long long fib2 = 1;
 
-	for (int i = 2; i < n; i++) {
+	for (unsigned int i = 2; i < n; i++) {
 		unsigned long long temp = fib1 + fib2;
 		fib1 = fib2;
 		fib2 = temp;

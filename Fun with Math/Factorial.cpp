@@ -16,5 +16,5 @@ unsigned long long fact_it(int n) {
 }
 
 unsigned long long fact(int n) {
-	return std::tgamma(n + 1) + 0.001;
+	return static_cast<unsigned int>(std::tgamma(n + 1) + 0.001);
 }
