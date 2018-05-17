@@ -30,6 +30,8 @@ namespace la {
 		Vector operator/(const double &) const;
 		Vector operator+(const Vector &) const;
 		Vector operator-(const Vector &) const;
+		Vector& operator*=(const double &);
+		Vector& operator/=(const double &);
 		Vector& operator+=(const Vector &);
 		Vector& operator-=(const Vector &);
 		Vector& operator=(const Vector &);
@@ -139,6 +141,18 @@ namespace la {
 		Vector<T> v(mDimension);
 		v.mMatrix = mMatrix - other.mMatrix;
 		return v;
+	}
+
+	template<typename T>
+	Vector<T>& Vector<T>::operator*=(const double &other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
+	Vector<T>& Vector<T>::operator/=(const double &other) {
+		*this = *this / other;
+		return *this;
 	}
 
 	template<typename T>

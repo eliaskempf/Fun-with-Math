@@ -32,8 +32,9 @@ namespace la {
 		Matrix operator/(const double &) const;
 		Matrix operator+(const Matrix &) const;
 		Matrix operator-(const Matrix &) const;
-		Matrix& operator*=(const double &);
 		Matrix& operator*=(const Matrix &);
+		Matrix& operator*=(const double &);
+		Matrix& operator/=(const double &);
 		Matrix& operator+=(const Matrix &);
 		Matrix& operator-=(const Matrix &);
 		Matrix& operator=(const Matrix &);
@@ -178,14 +179,20 @@ namespace la {
 	}
 
 	template<typename T>
+	Matrix<T>& Matrix<T>::operator*=(const Matrix<T> &other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
 	Matrix<T>& Matrix<T>::operator*=(const double &other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator*=(const Matrix<T> &other) {
-		*this = *this * other;
+	Matrix<T>& Matrix<T>::operator/=(const double &other) {
+		*this = *this / other;
 		return *this;
 	}
 
