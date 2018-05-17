@@ -11,7 +11,7 @@ namespace la {
 
 	public:
 		// Constructors
-		Vector(size_t, T = 0);
+		explicit Vector(size_t, T = 0);
 		Vector(const Vector &);
 		Vector(Vector &&);
 
