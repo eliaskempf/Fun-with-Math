@@ -11,7 +11,7 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix(int, int, T = 0);
+		Matrix(size_t, size_t, T = 0);
 		Matrix(const Matrix &);
 		Matrix(Matrix &&);
 
@@ -27,19 +27,32 @@ namespace la {
 		T operator()(int, int) const;
 		T& operator()(int, int);
 		Matrix operator*(const Matrix &) const;
-		// Matrix operator*(const Vector<T> &) const;
+		// Vector operator*(const Vector<T> &) const;
 		Matrix operator*(const double &) const;
+		Matrix operator/(const double &) const;
 		Matrix operator+(const Matrix &) const;
 		Matrix operator-(const Matrix &) const;
+		Matrix& operator*=(const double &);
+		Matrix& operator*=(const Matrix &);
+		Matrix& operator+=(const Matrix &);
+		Matrix& operator-=(const Matrix &);
 		Matrix& operator=(const Matrix &);
 		Matrix& operator=(Matrix &&);
+		bool operator==(const Matrix &) const;
+		bool operator!=(const Matrix &) const;
 	};
 
 	template<typename T>
-	Matrix<T>::Matrix(int rows, int cols, T defVal)
+	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal)
 		: mCols(cols), mRows(rows) {
 		mEntries = new T[rows * cols];
-		memset(mEntries, defVal, rows * cols * sizeof(T));
+		if (defVal != 0) {
+			size_t dim = rows * cols;
+			for (size_t i = 0; i < dim; i++) { mEntries[i] = defVal; }
+		}
+		else {
+			memset(mEntries, 0, rows * cols * sizeof(T));
+		}
 	}
 
 	template<typename T>
@@ -97,8 +110,8 @@ namespace la {
 	template<typename T>
 	Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const {
 		if (mCols != other.mRows) {
-			throw std::runtime_error("Can not multiply by a matrix which rows do not \
-				                      match with the columns of the original matrix.");
+			throw std::runtime_error("Can not multiply by a matrix which rows does not \
+				                      match the columns of the original matrix.");
 		}
 
 		Matrix<T> m(mRows, other.mCols);
@@ -108,14 +121,14 @@ namespace la {
 
 	/*
 	template<typename T>
-	Matrix<T> Matrix<T>::operator*(const Vector<T> &other) const {
-		if (mRows != other.mDimension) {
-			throw std::runtime_error("Can not multiply by a vector which dimension do \
-									  not match with the columns of the matrix.");
+	Vector<T> Matrix<T>::operator*(const Vector<T> &other) const {
+		if (mCols != other.mDimension) {
+			throw std::runtime_error("Can not multiply by a vector which dimension does \
+									  not match the columns of the matrix.");
 		}
 
 		Vector<T> v(mRows);
-		v.mEntries = *this * other.mEntries;
+		v.mMatrix = *this * other.mMatrix;
 		return v;
 	}
 	*/
@@ -124,7 +137,16 @@ namespace la {
 	Matrix<T> Matrix<T>::operator*(const double &other) const {
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < this->entries(); i++) {
-			m.mEntries[i] = this->mEntries[i] * other;
+			m.mEntries[i] = mEntries[i] * other;
+		}
+		return m;
+	}
+
+	template<typename T>
+	Matrix<T> Matrix<T>::operator/(const double &other) const {
+		Matrix<T> m(mRows, mCols);
+		for (size_t i = 0; i < this->entries(); i++) {
+			m.mEntries[i] = mEntries[i] / other;
 		}
 		return m;
 	}
@@ -137,7 +159,7 @@ namespace la {
 
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < this->entries(); i++) {
-			m.mEntries[i] = this->mEntries[i] + other.mEntries[i];
+			m.mEntries[i] = mEntries[i] + other.mEntries[i];
 		}
 		return m;
 	}
@@ -150,9 +172,33 @@ namespace la {
 
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < this->entries(); i++) {
-			m.mEntries[i] = this->mEntries[i] - other.mEntries[i];
+			m.mEntries[i] = mEntries[i] - other.mEntries[i];
 		}
 		return m;
+	}
+
+	template<typename T>
+	Matrix<T>& Matrix<T>::operator*=(const double &other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
+	Matrix<T>& Matrix<T>::operator*=(const Matrix<T> &other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
+	Matrix<T>& Matrix<T>::operator+=(const Matrix<T> &other) {
+		*this = *this + other;
+		return *this;
+	}
+
+	template<typename T>
+	Matrix<T>& Matrix<T>::operator-=(const Matrix<T> &other) {
+		*this = *this - other;
+		return *this;
 	}
 
 	template<typename T>
@@ -179,5 +225,22 @@ namespace la {
 			mCols = other.mCols;
 		}
 		return *this;
+	}
+
+	template<typename T>
+	bool Matrix<T>::operator==(const Matrix &other) const {
+		if (mRows != other.mRows || mCols != other.mCols) { return false; }
+		for (size_t i = 0; i < other.entries(); i++) {
+			if (mEntries[i] != other.mEntries[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool Matrix<T>::operator!=(const Matrix &other) const {
+		if (*this == other) { return false; }
+		return true;
 	}
 }
