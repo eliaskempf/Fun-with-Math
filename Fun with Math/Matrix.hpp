@@ -1,5 +1,4 @@
 #pragma once
-// #include "Vector.hpp"
 
 namespace la {
 	template<typename T = double>
@@ -27,7 +26,7 @@ namespace la {
 		T operator()(int, int) const;
 		T& operator()(int, int);
 		Matrix operator*(const Matrix &) const;
-		// Vector operator*(const Vector<T> &) const;
+		// Vector<T> operator*(const Vector<T> &) const;
 		Matrix operator*(const double &) const;
 		Matrix operator/(const double &) const;
 		Matrix operator+(const Matrix &) const;
