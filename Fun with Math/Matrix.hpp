@@ -325,14 +325,20 @@ namespace la {
 	// Test wise implementation
 	std::ostream& operator<<(std::ostream &os, const Matrix<double> &m) {
 		double max = 0;
-		for (size_t i = 0; i < m.entries(); i++) { max = m.mEntries[i] > max ? m.mEntries[i] : max; }
-		int maxLength = floor(log(max) / log(10)) + 1;
+		bool firstCol = false;
+		for (size_t i = 0; i < m.entries(); i++) {
+			if (m.mEntries[i] > max) {
+				max = m.mEntries[i];
+				firstCol = (i % m.mCols == 0);
+			}
+		}
+		int maxLength = log(max) / log(10) + 1.1;
 
-		for (size_t i = 0; i < m.rows(); i++) {
+		for (size_t i = 0; i < m.mRows; i++) {
 			os << "| ";
-			for (size_t j = 0; j < m.columns(); j++) {
-				int length = floor(log(m(i, j)) / log(10)) + 1;
-				for (int j = 0; j < maxLength - length; j++) { os << " "; }
+			for (size_t j = 0; j < m.mCols; j++) {
+				int length = log(m(i, j)) / log(10) + 1.1;
+				for (int k = 0; k < maxLength - length; k++) { if (j != 0 || firstCol) { os << " "; } }
 				os << m(i, j) << " ";
 			}
 			os << "|" << std::endl;
