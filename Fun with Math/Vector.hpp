@@ -1,8 +1,10 @@
 #pragma once
 #include <stdexcept>
-#include "Matrix.hpp"
 
 namespace la {
+	template<typename T = double>
+	class Matrix;
+
 	template<typename T = double>
 	class Vector {
 	private:

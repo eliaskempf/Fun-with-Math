@@ -1,6 +1,9 @@
 #pragma once
 
 namespace la {
+	template <typename T = double>
+	class Vector;
+
 	template<typename T = double>
 	class Matrix {
 	private:
@@ -26,7 +29,7 @@ namespace la {
 		T operator()(int, int) const;
 		T& operator()(int, int);
 		Matrix operator*(const Matrix &) const;
-		// Vector<T> operator*(const Vector<T> &) const;
+		Vector<T> operator*(const Vector<T> &) const;
 		Matrix operator*(const double &) const;
 		Matrix operator/(const double &) const;
 		Matrix operator+(const Matrix &) const;
@@ -114,12 +117,20 @@ namespace la {
 				                      match the columns of the original matrix.");
 		}
 
+		// The resulting matrix of the multiplication
 		Matrix<T> m(mRows, other.mCols);
-		// Insert multiplication \(*-*)/
+		for (size_t i = 0; i < m.mRows; i++) {
+			for (size_t k = 0; k < m.mCols; k++) {
+				T c_ik = 0;
+				for (size_t j = 0; j < mCols; j++) {
+					c_ik += (*this)(i, j) * other(j, k);
+				}
+				m(i, k) = c_ik;
+			}
+		}
 		return m;
 	}
 
-	/*
 	template<typename T>
 	Vector<T> Matrix<T>::operator*(const Vector<T> &other) const {
 		if (mCols != other.mDimension) {
@@ -131,7 +142,6 @@ namespace la {
 		v.mMatrix = *this * other.mMatrix;
 		return v;
 	}
-	*/
 
 	template<typename T>
 	Matrix<T> Matrix<T>::operator*(const double &other) const {
