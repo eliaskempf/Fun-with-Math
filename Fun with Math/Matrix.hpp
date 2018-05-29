@@ -346,4 +346,3 @@ namespace la {
 		return os;
 	}
 }
-

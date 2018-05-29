@@ -11,13 +11,15 @@ namespace la {
 		size_t mDimension;
 		Matrix<T> mMatrix;
 
+		friend class Matrix<T>;
+
 	public:
 		// Constructors
 		explicit Vector(size_t, T = 0);
 		Vector(const Vector &);
 		Vector(Vector &&);
 
-		// getter for dimensions
+		// Getter for dimensions
 		double getLength() const;
 		size_t getDimension() const;
 
