@@ -68,7 +68,6 @@ namespace la {
 		return mDimension;
 	}
 
-	// TODO
 	template<typename T>
 	void Vector<T>::normalize() {
 		double norm = this->getLength();

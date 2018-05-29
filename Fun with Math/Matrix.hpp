@@ -1,4 +1,8 @@
 #pragma once
+#include <thread>
+#include <stdexcept>
+#include <cmath>
+#include <iostream>
 
 namespace la {
 	template <typename T = double>
@@ -43,11 +47,16 @@ namespace la {
 		Matrix& operator=(Matrix &&);
 		bool operator==(const Matrix &) const;
 		bool operator!=(const Matrix &) const;
+		friend std::ostream& operator<<(std::ostream &, const Matrix &);
 	};
 
 	template<typename T>
 	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal)
 		: mCols(cols), mRows(rows) {
+		if (mCols == 0 || mRows == 0) {
+			throw std::logic_error("Matrix does not allow zero dimensions.");
+		}
+
 		mEntries = new T[rows * cols];
 		if (defVal != 0) {
 			size_t dim = rows * cols;
@@ -117,8 +126,60 @@ namespace la {
 				                      match the columns of the original matrix.");
 		}
 
-		// The resulting matrix of the multiplication
+		/*
+		int supportedThreads = std::thread::hardware_concurrency();
+		supportedThreads = supportedThreads == 0 ? 2 : supportedThreads;
+
+		const int minColsPerThread = 2;
+
+		int cols = mRows > other.mCols ? mRows : other.mCols;
+		int rows = mRows > other.mCols ? other.mCols : mRows;
+
+		Matrix<T> m(rows, cols);
+
+		int maxAmountOfThreads = (cols + minColsPerThread - 1) / minColsPerThread;
+		int amountOfThreads = supportedThreads > maxAmountOfThreads ? maxAmountOfThreads : supportedThreads;
+
+		int colsPerThread = cols / amountOfThreads;
+
+		std::thread* threads = new std::thread[amountOfThreads - 1];
+
+		for (int c = 0; c < amountOfThreads - 1; c++) {
+			threads[c] = std::thread([c, rows, mCols, colsPerThread, this, other, &m]() {
+				for (size_t i = 0; i < rows; i++) {
+					for (size_t k = c * colsPerThread; k < colsPerThread; k++) {
+						T c_ik = 0;
+						for (size_t j = 0; j < mCols; j++) {
+							c_ik += (*this)(i, j) * other(j, k);
+						}
+						m(i, k) = c_ik;
+					}
+				}
+			}, std::ref(m));
+		}
+
+		for (size_t i = 0; i < rows; i++) {
+			for (size_t k = (amountOfThreads - 1) * colsPerThread; k < cols; k++) {
+				T c_ik = 0;
+				for (size_t j = 0; j < mCols; j++) {
+					c_ik += (*this)(i, j) * other(j, k);
+				}
+				m(i, k) = c_ik;
+			}
+		}
+
+		for (int c = 0; c < amountOfThreads - 1; c++) {
+			threads[c].join();
+		}
+
+		if (rows != mRows) {
+			m.mRows = rows;
+			m.mCols = cols;
+		}
+		*/
+
 		Matrix<T> m(mRows, other.mCols);
+
 		for (size_t i = 0; i < m.mRows; i++) {
 			for (size_t k = 0; k < m.mCols; k++) {
 				T c_ik = 0;
@@ -128,6 +189,7 @@ namespace la {
 				m(i, k) = c_ik;
 			}
 		}
+		
 		return m;
 	}
 
@@ -259,4 +321,23 @@ namespace la {
 		if (*this == other) { return false; }
 		return true;
 	}
+
+	// Test wise implementation
+	std::ostream& operator<<(std::ostream &os, const Matrix<double> &m) {
+		double max = 0;
+		for (size_t i = 0; i < m.entries(); i++) { max = m.mEntries[i] > max ? m.mEntries[i] : max; }
+		int maxLength = floor(log(max) / log(10)) + 1;
+
+		for (size_t i = 0; i < m.rows(); i++) {
+			os << "| ";
+			for (size_t j = 0; j < m.columns(); j++) {
+				int length = floor(log(m(i, j)) / log(10)) + 1;
+				for (int j = 0; j < maxLength - length; j++) { os << " "; }
+				os << m(i, j) << " ";
+			}
+			os << "|" << std::endl;
+		}
+		return os;
+	}
 }
+
