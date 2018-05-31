@@ -29,6 +29,10 @@ namespace la {
 		size_t columns() const;
 		size_t entries() const;
 
+		// Static methods
+		static Matrix IdentityMatrix(int);
+		static Matrix ElementaryMatrix(int, int, int, T);
+
 		// Overloaded operators
 		T operator()(int, int) const;
 		T& operator()(int, int);
@@ -101,6 +105,25 @@ namespace la {
 	template<typename T>
 	size_t Matrix<T>::entries() const {
 		return mRows * mCols;
+	}
+
+	template<typename T>
+	Matrix<T> Matrix<T>::IdentityMatrix(int size) {
+		Matrix<T> m(size, size);
+		for (int i = 0; i < size; i++) {
+			m(i, i) = 1;
+		}
+		return m;
+	}
+
+	template<typename T>
+	Matrix<T> Matrix<T>::ElementaryMatrix(int size, int row, int col, T val) {
+		Matrix<T> m(size, size);
+		for (int i = 0; i < size; i++) {
+			m(i, i) = 1;
+		}
+		m(row, col) = val;
+		return m;
 	}
 
 	template<typename T>
