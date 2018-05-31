@@ -142,8 +142,8 @@ namespace la {
 		return mEntries[i * mCols + j];
 	}
 
-	template<typename T>
-	Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const {
+	template<typename T, int>
+	Matrix<T> Matrix<T>::operator*(const Matrix<int> &other) const {
 		if (mCols != other.mRows) {
 			throw std::runtime_error("Can not multiply by a matrix which rows does not \
 				                      match the columns of the original matrix.");
