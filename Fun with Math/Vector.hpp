@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <cmath>
 
 namespace la {
 	template<typename T = double>
@@ -20,11 +21,14 @@ namespace la {
 		Vector(Vector &&);
 
 		// Getter for dimensions
-		double getLength() const;
+		double length() const;
 		size_t getDimension() const;
 
 		// Transform into norm
 		void normalize();
+
+		// Calculate angle between vectors
+		double angle(const Vector &) const;
 
 		// Overloaded operators
 		T operator[](int) const;
@@ -61,7 +65,7 @@ namespace la {
 	{}
 
 	template<typename T>
-	double Vector<T>::getLength() const {
+	double Vector<T>::length() const {
 		return sqrt((*this) * (*this));
 	}
 
@@ -72,7 +76,7 @@ namespace la {
 
 	template<typename T>
 	void Vector<T>::normalize() {
-		double norm = this->getLength();
+		double norm = this->length();
 		for (size_t i = 0; i < mDimension; i++) {
 			mMatrix(i, 0) /= norm;
 		}
@@ -81,6 +85,11 @@ namespace la {
 	template<>
 	void Vector<int>::normalize() {
 		throw std::logic_error("Can not normalize an integer vector.");
+	}
+
+	template<typename T>
+	double Vector<T>::angle(const Vector<T> &other) const {
+		return acos((*this * other) / (this->length() * other.length()));
 	}
 
 	template<typename T>
