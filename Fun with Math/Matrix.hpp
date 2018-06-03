@@ -5,10 +5,10 @@
 #include <iostream>
 
 namespace la {
-	template <typename T = double>
+	template <typename T>
 	class Vector;
 
-	template<typename T = double>
+	template<typename T>
 	class Matrix {
 	private:
 		T * mEntries;
@@ -142,8 +142,8 @@ namespace la {
 		return mEntries[i * mCols + j];
 	}
 
-	template<typename T, int>
-	Matrix<T> Matrix<T>::operator*(const Matrix<int> &other) const {
+	template<typename T>
+	Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const {
 		if (mCols != other.mRows) {
 			throw std::runtime_error("Can not multiply by a matrix which rows does not \
 				                      match the columns of the original matrix.");

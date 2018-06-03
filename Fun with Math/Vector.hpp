@@ -3,10 +3,10 @@
 #include <cmath>
 
 namespace la {
-	template<typename T = double>
+	template<typename T>
 	class Matrix;
 
-	template<typename T = double>
+	template<typename T>
 	class Vector {
 	private:
 		size_t mDimension;
