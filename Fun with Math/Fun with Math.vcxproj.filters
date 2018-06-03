@@ -33,15 +33,6 @@
     <ClInclude Include="threeNplusOne.hpp">
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="Fibonacci.hpp">
-      <Filter>Headerdateien\MathHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Ackermann.hpp">
-      <Filter>Headerdateien\MathHeaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Primes.hpp">
-      <Filter>Headerdateien\MathHeaders</Filter>
-    </ClInclude>
     <ClInclude Include="Factorial.hpp">
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
@@ -52,6 +43,15 @@
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.hpp">
+      <Filter>Headerdateien\MathHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Primes.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Fibonacci.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Ackermann.hpp">
       <Filter>Headerdateien\MathHeaders</Filter>
     </ClInclude>
   </ItemGroup>
