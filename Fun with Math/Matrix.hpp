@@ -33,6 +33,9 @@ namespace la {
 		static Matrix IdentityMatrix(int);
 		static Matrix ElementaryMatrix(int, int, int, T);
 
+		// Calculate determinant
+		double det() const;
+
 		// Overloaded operators
 		T operator()(size_t, size_t) const;
 		T& operator()(size_t, size_t);
@@ -52,7 +55,6 @@ namespace la {
 		bool operator==(const Matrix &) const;
 		bool operator!=(const Matrix &) const;
 		friend std::ostream& operator<<(std::ostream &, const Matrix &);
-		friend double det(const Matrix &);
 	};
 
 	template<typename T>
@@ -346,29 +348,30 @@ namespace la {
 		return true;
 	}
 
-	double det(const Matrix<double> &m) {
-		if (m.columns() != m.rows()) {
+	template<typename T>
+	double Matrix<T>::det() const {
+		if (mCols != mRows) {
 			throw std::logic_error("Matrix has to be quadratic.");
 		}
 
-		if (m.columns() <= 2) {
-			if (m.columns() == 2) {
-				return m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1);
+		if (mCols <= 2) {
+			if (mCols == 2) {
+				return mEntries[0] * mEntries[3] - mEntries[1] * mEntries[2];
 			}
 			else {
-				return m(0, 0);
+				return mEntries[0];
 			}
 		}
 
 		double d = 0;
-		for (size_t j = 0; j < m.columns(); j++) {
-			Matrix<double> sm(m.rows() - 1, m.columns() - 1);
+		for (size_t j = 0; j < mCols; j++) {
+			Matrix<T> sm(mRows - 1, mCols - 1);
 			int s = 0;
 			for (size_t i = 0; i < sm.entries(); i++) {
-				if ((i + s) % m.columns() == j) { s++; }
-				sm.mEntries[i] = m.mEntries[i + m.columns() + s];
+				if ((i + s) % mCols == j) { s++; }
+				sm.mEntries[i] = mEntries[i + mCols + s];
 			}
-			d += m(0, j) * pow(-1, j) * det(sm);
+			d += mEntries[j] * pow(-1, j) * sm.det();
 		}
 		return d;
 	}
