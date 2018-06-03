@@ -22,7 +22,7 @@ namespace la {
 
 		// Getter for dimensions
 		double length() const;
-		size_t getDimension() const;
+		size_t dimension() const;
 
 		// Transform into norm
 		void normalize();
@@ -46,7 +46,7 @@ namespace la {
 		Vector& operator=(Vector &&);
 		bool operator==(const Vector &) const;
 		bool operator!=(const Vector &) const;
-
+		friend std::ostream& operator<<(std::ostream &, const Vector &);
 	};
 
 	template<typename T>
@@ -70,7 +70,7 @@ namespace la {
 	}
 
 	template<typename T>
-	size_t Vector<T>::getDimension() const {
+	size_t Vector<T>::dimension() const {
 		return mDimension;
 	}
 
@@ -208,5 +208,23 @@ namespace la {
 	bool Vector<T>::operator!=(const Vector<T> &other) const {
 		if (*this == other) { return false; }
 		return true;
+	}
+
+	// Test wise implementation
+	std::ostream& operator<<(std::ostream &os, const Vector<double> &v) {
+		double max = 0;
+		for (size_t i = 0; i < v.mDimension; i++) {
+			if (v[i] > max) { max = v[i];  }
+		}
+		int maxLength = log(max) / log(10) + 1.1;
+
+		for (size_t i = 0; i < v.mDimension; i++) {
+			os << "| ";
+			int length = log(v[i]) / log(10) + 1.1;
+			for (int j = length; j < maxLength; j++) { os << " ";  }
+			os << v[i];
+			os << " |" << std::endl;
+		}
+		return os;
 	}
 }
