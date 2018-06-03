@@ -31,8 +31,8 @@ namespace la {
 		double angle(const Vector &) const;
 
 		// Overloaded operators
-		T operator[](int) const;
-		T& operator[](int);
+		T operator[](size_t) const;
+		T& operator[](size_t);
 		T operator*(const Vector &) const;
 		Vector operator*(const double &) const;
 		Vector operator/(const double &) const;
@@ -93,7 +93,7 @@ namespace la {
 	}
 
 	template<typename T>
-	T Vector<T>::operator[](int index) const {
+	T Vector<T>::operator[](size_t index) const {
 		if (index >= mDimension) {
 			throw std::out_of_range("Exceeded vector range.");
 		}
@@ -101,7 +101,7 @@ namespace la {
 	}
 
 	template<typename T>
-	T& Vector<T>::operator[](int index) {
+	T& Vector<T>::operator[](size_t index) {
 		if (index >= mDimension) {
 			throw std::out_of_range("Exceeded vector range.");
 		}
@@ -216,12 +216,12 @@ namespace la {
 		for (size_t i = 0; i < v.mDimension; i++) {
 			if (v[i] > max) { max = v[i];  }
 		}
-		int maxLength = log(max) / log(10) + 1.1;
+		int maxLength = log(max) / log(10) + 1.000001;
 
 		for (size_t i = 0; i < v.mDimension; i++) {
 			os << "| ";
-			int length = log(v[i]) / log(10) + 1.1;
-			for (int j = length; j < maxLength; j++) { os << " ";  }
+			int length = v[i] == 0 ? 1 : log(v[i]) / log(10) + 1.000001;
+			for (int j = 0; j < maxLength - length; j++) { os << " ";  }
 			os << v[i];
 			os << " |" << std::endl;
 		}

@@ -34,8 +34,8 @@ namespace la {
 		static Matrix ElementaryMatrix(int, int, int, T);
 
 		// Overloaded operators
-		T operator()(int, int) const;
-		T& operator()(int, int);
+		T operator()(size_t, size_t) const;
+		T& operator()(size_t, size_t);
 		Matrix operator*(const Matrix &) const;
 		Vector<T> operator*(const Vector<T> &) const;
 		Matrix operator*(const double &) const;
@@ -128,7 +128,7 @@ namespace la {
 	}
 
 	template<typename T>
-	T Matrix<T>::operator()(int i, int j) const {
+	T Matrix<T>::operator()(size_t i, size_t j) const {
 		if (i >= mRows || i < 0 || j >= mCols || j < 0) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
@@ -136,8 +136,8 @@ namespace la {
 	}
 
 	template<typename T>
-	T& Matrix<T>::operator()(int i, int j) {
-		if (i >= mRows || i < 0 || j >= mCols || j < 0) {
+	T& Matrix<T>::operator()(size_t i, size_t j) {
+		if (i >= mRows || j >= mCols) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
 		return mEntries[i * mCols + j];
@@ -351,8 +351,13 @@ namespace la {
 			throw std::logic_error("Matrix has to be quadratic.");
 		}
 
-		if (m.columns() == 2) {
-			return m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1);
+		if (m.columns() <= 2) {
+			if (m.columns() == 2) {
+				return m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1);
+			}
+			else {
+				return m(0, 0);
+			}
 		}
 
 		double d = 0;
@@ -371,20 +376,25 @@ namespace la {
 	// Test wise implementation
 	std::ostream& operator<<(std::ostream &os, const Matrix<double> &m) {
 		double max = 0;
+		double fMax = 0;
 		bool firstCol = false;
 		for (size_t i = 0; i < m.entries(); i++) {
 			if (m.mEntries[i] > max) {
 				max = m.mEntries[i];
-				firstCol = (i % m.mCols == 0);
+			}
+
+			if (i % m.mCols == 0 && m.mEntries[i] > fMax) {
+				fMax = m.mEntries[i];
 			}
 		}
-		int maxLength = log(max) / log(10) + 1.1;
+		int maxLength = log(max) / log(10) + 1.000001;
+		int fMaxLength = log(fMax) / log(10) + 1.000001;
 
 		for (size_t i = 0; i < m.mRows; i++) {
 			os << "| ";
 			for (size_t j = 0; j < m.mCols; j++) {
-				int length = log(m(i, j)) / log(10) + 1.1;
-				for (int k = 0; k < maxLength - length; k++) { if (j != 0 || firstCol) { os << " "; } }
+				int length = m(i, j) == 0 ? 1 : log(m(i, j)) / log(10) + 1.000001;
+				for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
 				os << m(i, j) << " ";
 			}
 			os << "|" << std::endl;
