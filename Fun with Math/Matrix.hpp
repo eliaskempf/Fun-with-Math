@@ -52,6 +52,7 @@ namespace la {
 		bool operator==(const Matrix &) const;
 		bool operator!=(const Matrix &) const;
 		friend std::ostream& operator<<(std::ostream &, const Matrix &);
+		friend double det(const Matrix &);
 	};
 
 	template<typename T>
@@ -343,6 +344,28 @@ namespace la {
 	bool Matrix<T>::operator!=(const Matrix &other) const {
 		if (*this == other) { return false; }
 		return true;
+	}
+
+	double det(const Matrix<double> &m) {
+		if (m.columns() != m.rows()) {
+			throw std::logic_error("Matrix has to be quadratic.");
+		}
+
+		if (m.columns() == 2) {
+			return m(0, 0) * m(1, 1) - m(1, 0) * m(0, 1);
+		}
+
+		double d = 0;
+		for (size_t j = 0; j < m.columns(); j++) {
+			Matrix<double> sm(m.rows() - 1, m.columns() - 1);
+			int s = 0;
+			for (size_t i = 0; i < sm.entries(); i++) {
+				if ((i + s) % m.columns() == j) { s++; }
+				sm.mEntries[i] = m.mEntries[i + m.columns() + s];
+			}
+			d += m(0, j) * pow(-1, j) * det(sm);
+		}
+		return d;
 	}
 
 	// Test wise implementation
