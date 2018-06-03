@@ -4,9 +4,7 @@
 #include "Vector.hpp"
 
 namespace la {
-	template<typename T = double>
-	using matrix = Matrix<T>;
+	using matrix = Matrix<>;
 
-	template<typename T = double>
-	using vector = Vector<T>;
+	using vector = Vector<>;
 }

@@ -8,7 +8,7 @@ namespace la {
 	template <typename T>
 	class Vector;
 
-	template<typename T>
+	template<typename T = double>
 	class Matrix {
 	private:
 		T * mEntries;

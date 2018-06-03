@@ -6,7 +6,7 @@ namespace la {
 	template<typename T>
 	class Matrix;
 
-	template<typename T>
+	template<typename T = double>
 	class Vector {
 	private:
 		size_t mDimension;
