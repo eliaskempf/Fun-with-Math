@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <thread>
 #include <stdexcept>
 #include <cmath>
@@ -17,12 +18,12 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix(size_t, size_t, T = 0);
-		Matrix(const Matrix &);
-		Matrix(Matrix &&);
+		Matrix(size_t, size_t, T = 0) noexcept;
+		Matrix(const Matrix &) noexcept;
+		Matrix(Matrix &&) noexcept;
 
 		// Destructor
-		~Matrix();
+		virtual ~Matrix();
 
 		// getter for the dimensions
 		size_t rows() const;
@@ -58,32 +59,26 @@ namespace la {
 	};
 
 	template<typename T>
-	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal)
+	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal) noexcept
 		: mCols(cols), mRows(rows) {
 		if (mCols == 0 || mRows == 0) {
 			throw std::logic_error("Matrix does not allow zero dimensions.");
 		}
 
 		mEntries = new T[rows * cols];
-		if (defVal != 0) {
-			size_t dim = rows * cols;
-			for (size_t i = 0; i < dim; i++) { mEntries[i] = defVal; }
-		}
-		else {
-			memset(mEntries, 0, rows * cols * sizeof(T));
-		}
+		std::fill(mEntries, mEntries + (rows * cols), defVal);
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(const Matrix<T> &other) {
+	Matrix<T>::Matrix(const Matrix<T> &other) noexcept {
 		mRows = other.mRows;
 		mCols = other.mCols;
 		mEntries = new T[other.entries()];
-		memcpy(mEntries, other.mEntries, other.entries() * sizeof(T));
+		std::copy(other.mEntries, other.mEntries + other.entries(), mEntries);
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(Matrix<T> &&other) {
+	Matrix<T>::Matrix(Matrix<T> &&other) noexcept {
 		mRows = other.mRows;
 		mCols = other.mCols;
 		mEntries = other.mEntries;
@@ -314,7 +309,7 @@ namespace la {
 			}
 			mRows = other.mRows;
 			mCols = other.mCols;
-			memcpy(mEntries, other.mEntries, other.entries() * sizeof(T));
+			std::copy(other.mEntries, other.mEntries + other.entries(), mEntries);
 		}
 		return *this;
 	}
@@ -392,6 +387,8 @@ namespace la {
 		}
 		int maxLength = log(max) / log(10) + 1.000001;
 		int fMaxLength = log(fMax) / log(10) + 1.000001;
+		maxLength = fmax(maxLength, 1);
+		fMaxLength = fmax(fMaxLength, 1);
 
 		for (size_t i = 0; i < m.mRows; i++) {
 			os << "| ";
@@ -400,7 +397,7 @@ namespace la {
 				for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
 				os << m(i, j) << " ";
 			}
-			os << "|" << std::endl;
+			os << "|\n";
 		}
 		return os;
 	}

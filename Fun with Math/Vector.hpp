@@ -16,9 +16,9 @@ namespace la {
 
 	public:
 		// Constructors
-		explicit Vector(size_t, T = 0);
-		Vector(const Vector &);
-		Vector(Vector &&);
+		explicit Vector(size_t, T = 0) noexcept;
+		Vector(const Vector &) noexcept;
+		Vector(Vector &&) noexcept;
 
 		// Getter for dimensions
 		double length() const;
@@ -50,17 +50,17 @@ namespace la {
 	};
 
 	template<typename T>
-	Vector<T>::Vector(size_t size, T defVal) 
+	Vector<T>::Vector(size_t size, T defVal) noexcept
 		: mDimension(size), mMatrix(size, 1, defVal) 
 	{}
 
 	template<typename T>
-	Vector<T>::Vector(const Vector<T> &other) 
+	Vector<T>::Vector(const Vector<T> &other) noexcept
 		: mDimension(other.mDimension), mMatrix(other.mMatrix)
 	{}
 
 	template<typename T>
-	Vector<T>::Vector(Vector<T> &&other)
+	Vector<T>::Vector(Vector<T> &&other) noexcept
 		: mDimension(other.mDimension), mMatrix(other.mMatrix)
 	{}
 
@@ -212,19 +212,7 @@ namespace la {
 
 	// Test wise implementation
 	std::ostream& operator<<(std::ostream &os, const Vector<double> &v) {
-		double max = 0;
-		for (size_t i = 0; i < v.mDimension; i++) {
-			if (v[i] > max) { max = v[i];  }
-		}
-		int maxLength = log(max) / log(10) + 1.000001;
-
-		for (size_t i = 0; i < v.mDimension; i++) {
-			os << "| ";
-			int length = v[i] == 0 ? 1 : log(v[i]) / log(10) + 1.000001;
-			for (int j = 0; j < maxLength - length; j++) { os << " ";  }
-			os << v[i];
-			os << " |" << std::endl;
-		}
+		os << v.mMatrix;
 		return os;
 	}
 }
