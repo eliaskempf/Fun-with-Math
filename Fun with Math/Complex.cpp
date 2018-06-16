@@ -140,7 +140,7 @@ namespace la::fields {
 	}
 
 	std::ostream & operator<<(std::ostream &os, const Complex &z) {
-		os << z.real() << (z.img() < 0 ? " - " : " + ") << abs(z.img()) << "i";
+		os << z.real() << (z.img() < 0 ? " - " : " + ") << std::abs(z.img()) << "i";
 		return os;
 	}
 }

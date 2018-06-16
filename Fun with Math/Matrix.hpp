@@ -1,9 +1,10 @@
 #pragma once
-#include <algorithm>
-#include <thread>
+
 #include <stdexcept>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
+#include <thread>
 
 namespace la {
 	template <typename T>
@@ -369,7 +370,7 @@ namespace la {
 				if ((i + s) % mCols == j) { s++; }
 				sm.mEntries[i] = mEntries[i + mCols + s];
 			}
-			d += mEntries[j] * pow(-1, j) * sm.det();
+			d += mEntries[j] * std::pow(-1, j) * sm.det();
 		}
 		return d;
 	}
@@ -388,15 +389,15 @@ namespace la {
 				fMax = m.mEntries[i];
 			}
 		}
-		int maxLength = log(max) / log(10) + 1.000001;
-		int fMaxLength = log(fMax) / log(10) + 1.000001;
-		maxLength = fmax(maxLength, 1);
-		fMaxLength = fmax(fMaxLength, 1);
+		int maxLength = std::log(max) / std::log(10) + 1.000001;
+		int fMaxLength = std::log(fMax) / std::log(10) + 1.000001;
+		maxLength = std::max(maxLength, 1);
+		fMaxLength = std::max(fMaxLength, 1);
 
 		for (size_t i = 0; i < m.mRows; i++) {
 			os << "| ";
 			for (size_t j = 0; j < m.mCols; j++) {
-				int length = m(i, j) == 0 ? 1 : log(m(i, j)) / log(10) + 1.000001;
+				int length = m(i, j) == 0 ? 1 : std::log(m(i, j)) / std::log(10) + 1.000001;
 				for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
 				os << m(i, j) << " ";
 			}

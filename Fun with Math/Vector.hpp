@@ -1,6 +1,8 @@
 #pragma once
+
 #include <stdexcept>
 #include <cmath>
+#include <iostream>
 
 namespace la {
 	template<typename T>
@@ -69,7 +71,7 @@ namespace la {
 
 	template<typename T>
 	double Vector<T>::length() const {
-		return sqrt((*this) * (*this));
+		return std::sqrt((*this) * (*this));
 	}
 
 	template<typename T>
@@ -92,7 +94,7 @@ namespace la {
 
 	template<typename T>
 	double Vector<T>::angle(const Vector<T> &other) const {
-		return acos((*this * other) / (this->length() * other.length()));
+		return std::acos((*this * other) / (this->length() * other.length()));
 	}
 
 	template<typename T>
