@@ -59,6 +59,9 @@ namespace la {
 	};
 
 	template<typename T>
+	Matrix<T> operator*(const double, const Matrix<T> &);
+
+	template<typename T>
 	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal) noexcept
 		: mCols(cols), mRows(rows) {
 		if (mCols == 0 || mRows == 0) {
@@ -400,5 +403,10 @@ namespace la {
 			os << "|\n";
 		}
 		return os;
+	}
+
+	template<typename T>
+	Matrix<T> operator*(const double x, const Matrix<T> &m) {
+		return m * x;
 	}
 }

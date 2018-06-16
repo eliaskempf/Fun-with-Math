@@ -3,51 +3,51 @@
 #include <iostream>
 
 namespace la::fields {
-	class complex {
+	class Complex {
 	private:
 		double m_real = 0;
 		double m_img = 0;
 
 	public:
 		// Constructor
-		complex() = default;
-		complex(double) noexcept;
-		complex(double, double) noexcept;
-		complex(const complex &) noexcept = default;
+		Complex() = default;
+		Complex(double) noexcept;
+		Complex(double, double) noexcept;
+		Complex(const Complex &) noexcept = default;
 
 		// Member functions
 		double real() const;
 		double img() const;
-		complex conjugate() const;
+		Complex conjugate() const;
 
 		// Overloaded operators
-		complex operator*(const double) const;
-		complex operator*(const complex &) const;
-		complex operator/(const double) const;
-		complex operator/(const complex &) const;
-		complex operator+(const double) const;
-		complex operator+(const complex &) const;
-		complex operator-(const double) const;
-		complex operator-(const complex &) const;
-		complex& operator*=(const double);
-		complex& operator*=(const complex &);
-		complex& operator/=(const double);
-		complex& operator/=(const complex &);
-		complex& operator+=(const double);
-		complex& operator+=(const complex &);
-		complex& operator-=(const double);
-		complex& operator-=(const complex &);
-		complex& operator=(const complex &);
-		complex& operator=(complex &&);
+		Complex operator*(const double) const;
+		Complex operator*(const Complex &) const;
+		Complex operator/(const double) const;
+		Complex operator/(const Complex &) const;
+		Complex operator+(const double) const;
+		Complex operator+(const Complex &) const;
+		Complex operator-(const double) const;
+		Complex operator-(const Complex &) const;
+		Complex& operator*=(const double);
+		Complex& operator*=(const Complex &);
+		Complex& operator/=(const double);
+		Complex& operator/=(const Complex &);
+		Complex& operator+=(const double);
+		Complex& operator+=(const Complex &);
+		Complex& operator-=(const double);
+		Complex& operator-=(const Complex &);
+		Complex& operator=(const Complex &);
+		Complex& operator=(Complex &&);
 		bool operator==(const double) const;
-		bool operator==(const complex &) const;
+		bool operator==(const Complex &) const;
 		bool operator!=(const double) const;
-		bool operator!=(const complex &) const;
+		bool operator!=(const Complex &) const;
 	};
 
-	complex operator*(const double, const complex &);
-	complex operator/(const double, const complex &);
-	complex operator+(const double, const complex &);
-	complex operator-(const double, const complex &);
-	std::ostream& operator<<(std::ostream &, const complex &);
+	Complex operator*(const double, const Complex &);
+	Complex operator/(const double, const Complex &);
+	Complex operator+(const double, const Complex &);
+	Complex operator-(const double, const Complex &);
+	std::ostream& operator<<(std::ostream &, const Complex &);
 }

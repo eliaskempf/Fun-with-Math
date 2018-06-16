@@ -50,6 +50,9 @@ namespace la {
 	};
 
 	template<typename T>
+	Vector<T> operator*(const double, const Vector<T> &);
+
+	template<typename T>
 	Vector<T>::Vector(size_t size, T defVal) noexcept
 		: mDimension(size), mMatrix(size, 1, defVal) 
 	{}
@@ -214,5 +217,10 @@ namespace la {
 	std::ostream& operator<<(std::ostream &os, const Vector<double> &v) {
 		os << v.mMatrix;
 		return os;
+	}
+
+	template<typename T>
+	Vector<T> operator*(const double x, const Vector<T> &v) {
+		return v * x;
 	}
 }

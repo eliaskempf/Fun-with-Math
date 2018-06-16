@@ -2,144 +2,144 @@
 #include "Complex.hpp"
 
 namespace la::fields {
-	complex::complex(double re) noexcept
+	Complex::Complex(double re) noexcept
 		: m_real(re)
 	{}
 
-	complex::complex(double re, double im) noexcept
+	Complex::Complex(double re, double im) noexcept
 		: m_real(re), m_img(im)
 	{}
 
-	double complex::real() const {
+	double Complex::real() const {
 		return m_real;
 	}
 
-	double complex::img() const {
+	double Complex::img() const {
 		return m_img;
 	}
 
-	complex complex::conjugate() const {
-		return complex(m_real, -m_img);
+	Complex Complex::conjugate() const {
+		return Complex(m_real, -m_img);
 	}
 
-	complex complex::operator*(const double other) const {
-		return complex(m_real * other, m_img * other);
+	Complex Complex::operator*(const double other) const {
+		return Complex(m_real * other, m_img * other);
 	}
 
-	complex complex::operator*(const complex &other) const {
-		return complex((m_real * other.m_real - m_img * other.m_img), (m_real * other.m_img + m_img * other.m_real));
+	Complex Complex::operator*(const Complex &other) const {
+		return Complex((m_real * other.m_real - m_img * other.m_img), (m_real * other.m_img + m_img * other.m_real));
 	}
 
-	complex complex::operator/(const double other) const {
-		return complex(m_real / other, m_img / other);
+	Complex Complex::operator/(const double other) const {
+		return Complex(m_real / other, m_img / other);
 	}
 
-	complex complex::operator/(const complex &other) const {
-		complex conj = other.conjugate();
+	Complex Complex::operator/(const Complex &other) const {
+		Complex conj = other.conjugate();
 		return (*this * conj) / (other * conj).m_real;
 	}
 
-	complex complex::operator+(const double other) const {
-		return complex(m_real + other, m_img);
+	Complex Complex::operator+(const double other) const {
+		return Complex(m_real + other, m_img);
 	}
 
-	complex complex::operator+(const complex &other) const {
-		return complex(m_real + other.m_real, m_img + other.m_img);
+	Complex Complex::operator+(const Complex &other) const {
+		return Complex(m_real + other.m_real, m_img + other.m_img);
 	}
 
-	complex complex::operator-(const double other) const {
-		return complex(m_real - other, m_img);
+	Complex Complex::operator-(const double other) const {
+		return Complex(m_real - other, m_img);
 	}
 
-	complex complex::operator-(const complex &other) const {
-		return complex(m_real - other.m_real, m_img - other.m_img);
+	Complex Complex::operator-(const Complex &other) const {
+		return Complex(m_real - other.m_real, m_img - other.m_img);
 	}
 
-	complex& complex::operator*=(const double other) {
+	Complex& Complex::operator*=(const double other) {
 		*this = *this * other;
 		return *this;
 	}
 
-	complex& complex::operator*=(const complex &other) {
+	Complex& Complex::operator*=(const Complex &other) {
 		*this = *this * other;
 		return *this;
 	}
 
-	complex& complex::operator/=(const double other) {
+	Complex& Complex::operator/=(const double other) {
 		*this = *this / other;
 		return *this;
 	}
 
-	complex& complex::operator/=(const complex &other) {
+	Complex& Complex::operator/=(const Complex &other) {
 		*this = *this / other;
 		return *this;
 	}
 
-	complex& complex::operator+=(const double other) {
+	Complex& Complex::operator+=(const double other) {
 		*this = *this + other;
 		return *this;
 	}
 
-	complex& complex::operator+=(const complex &other) {
+	Complex& Complex::operator+=(const Complex &other) {
 		*this = *this + other;
 		return *this;
 	}
 
-	complex& complex::operator-=(const double other) {
+	Complex& Complex::operator-=(const double other) {
 		*this = *this - other;
 		return *this;
 	}
 
-	complex& complex::operator-=(const complex &other) {
+	Complex& Complex::operator-=(const Complex &other) {
 		*this = *this - other;
 		return *this;
 	}
 
-	complex& complex::operator=(const complex &other) {
+	Complex& Complex::operator=(const Complex &other) {
 		m_real = other.m_real;
 		m_img = other.m_img;
 		return *this;
 	}
 
-	complex& complex::operator=(complex &&other) {
+	Complex& Complex::operator=(Complex &&other) {
 		m_real = other.m_real;
 		m_img = other.m_img;
 		return *this;
 	}
 
-	bool complex::operator==(const double other) const {
+	bool Complex::operator==(const double other) const {
 		return m_real == other && m_img == 0;
 	}
 
-	bool complex::operator==(const complex &other) const {
+	bool Complex::operator==(const Complex &other) const {
 		return m_real == other.m_real && m_img == other.m_img;
 	}
 
-	bool complex::operator!=(const double other) const {
+	bool Complex::operator!=(const double other) const {
 		return m_real != other || m_img != 0;
 	}
 
-	bool complex::operator!=(const complex &other) const {
+	bool Complex::operator!=(const Complex &other) const {
 		return m_real != other.m_real || m_img != other.m_img;
 	}
 
-	complex operator*(const double x, const complex &z) {
-		return complex(x * z.real(), x * z.img());
+	Complex operator*(const double x, const Complex &z) {
+		return Complex(x * z.real(), x * z.img());
 	}
 
-	complex operator/(const double x, const complex &z) {
-		return complex(x, 0) / z;
+	Complex operator/(const double x, const Complex &z) {
+		return Complex(x, 0) / z;
 	}
 
-	complex operator+(const double x, const complex &z) {
-		return complex(x + z.real(), z.img());
+	Complex operator+(const double x, const Complex &z) {
+		return Complex(x + z.real(), z.img());
 	}
 
-	complex operator-(const double x, const complex &z) {
-		return complex(x - z.real(), -z.img());
+	Complex operator-(const double x, const Complex &z) {
+		return Complex(x - z.real(), -z.img());
 	}
 
-	std::ostream & operator<<(std::ostream &os, const complex &z) {
+	std::ostream & operator<<(std::ostream &os, const Complex &z) {
 		os << z.real() << (z.img() < 0 ? " - " : " + ") << abs(z.img()) << "i";
 		return os;
 	}

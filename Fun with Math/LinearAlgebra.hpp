@@ -7,7 +7,11 @@
 namespace la {
 	using matrix = Matrix<>;
 	using vector = Vector<>;
-	// using complex = Complex;
-	
-	// using module_ring<m> = ModuleRing<m>;
+}
+
+namespace la::fields {
+	using complex = Complex;
+
+	template<unsigned int m>
+	using module_ring = ModuleRing<m>;
 }
