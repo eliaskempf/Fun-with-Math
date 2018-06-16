@@ -10,7 +10,7 @@ namespace la::fields {
 
 	public:
 		// Constructor
-		complex() noexcept = default;
+		complex() = default;
 		complex(double) noexcept;
 		complex(double, double) noexcept;
 		complex(const complex &) noexcept = default;

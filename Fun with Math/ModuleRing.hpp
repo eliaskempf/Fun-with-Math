@@ -11,7 +11,7 @@ namespace la::fields {
 	public:
 		// Constructors
 		module_ring() = default;
-		explicit module_ring(unsigned int) noexcept;
+		module_ring(unsigned int) noexcept;
 
 		// Member functions
 		unsigned int value() const;
@@ -116,11 +116,13 @@ namespace la::fields {
 	template<unsigned int m>
 	module_ring<m>& module_ring<m>::operator=(const unsigned int other) {
 		m_value = other % m;
+		return *this;
 	}
 
 	template<unsigned int m>
 	module_ring<m>& module_ring<m>::operator=(const module_ring<m> &other) {
 		m_value = other.m_value;
+		return *this;
 	}
 
 	template<unsigned int m>
