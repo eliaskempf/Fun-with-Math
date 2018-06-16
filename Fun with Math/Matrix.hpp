@@ -31,8 +31,8 @@ namespace la {
 		size_t entries() const;
 
 		// Static methods
-		static Matrix IdentityMatrix(int);
-		static Matrix ElementaryMatrix(int, int, int, T);
+		static Matrix IdentityMatrix(size_t);
+		static Matrix ElementaryMatrix(size_t, size_t, size_t, T);
 
 		// Calculate determinant
 		double det() const;
@@ -42,13 +42,13 @@ namespace la {
 		T& operator()(size_t, size_t);
 		Matrix operator*(const Matrix &) const;
 		Vector<T> operator*(const Vector<T> &) const;
-		Matrix operator*(const double &) const;
-		Matrix operator/(const double &) const;
+		Matrix operator*(const double) const;
+		Matrix operator/(const double) const;
 		Matrix operator+(const Matrix &) const;
 		Matrix operator-(const Matrix &) const;
 		Matrix& operator*=(const Matrix &);
-		Matrix& operator*=(const double &);
-		Matrix& operator/=(const double &);
+		Matrix& operator*=(const double);
+		Matrix& operator/=(const double);
 		Matrix& operator+=(const Matrix &);
 		Matrix& operator-=(const Matrix &);
 		Matrix& operator=(const Matrix &);
@@ -106,7 +106,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::IdentityMatrix(int size) {
+	Matrix<T> Matrix<T>::IdentityMatrix(size_t size) {
 		Matrix<T> m(size, size);
 		for (int i = 0; i < size; i++) {
 			m(i, i) = 1;
@@ -115,7 +115,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::ElementaryMatrix(int size, int row, int col, T val) {
+	Matrix<T> Matrix<T>::ElementaryMatrix(size_t size, size_t row, size_t col, T val) {
 		Matrix<T> m(size, size);
 		for (int i = 0; i < size; i++) {
 			m(i, i) = 1;
@@ -227,7 +227,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator*(const double &other) const {
+	Matrix<T> Matrix<T>::operator*(const double other) const {
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < this->entries(); i++) {
 			m.mEntries[i] = mEntries[i] * other;
@@ -236,7 +236,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator/(const double &other) const {
+	Matrix<T> Matrix<T>::operator/(const double other) const {
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < this->entries(); i++) {
 			m.mEntries[i] = mEntries[i] / other;
@@ -277,13 +277,13 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator*=(const double &other) {
+	Matrix<T>& Matrix<T>::operator*=(const double other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator/=(const double &other) {
+	Matrix<T>& Matrix<T>::operator/=(const double other) {
 		*this = *this / other;
 		return *this;
 	}

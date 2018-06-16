@@ -12,7 +12,7 @@ namespace la {
 		size_t mDimension;
 		Matrix<T> mMatrix;
 
-		friend class Matrix<T>;
+		friend Matrix<T>;
 
 	public:
 		// Constructors

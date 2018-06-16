@@ -138,8 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>
-      </LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,8 +149,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ackermann.hpp" />
+    <ClInclude Include="Complex.hpp" />
     <ClInclude Include="Factorial.hpp" />
+    <ClInclude Include="Fibonacci.hpp" />
+    <ClInclude Include="Fields.hpp" />
     <ClInclude Include="LinearAlgebra.hpp" />
+    <ClInclude Include="ModuleRing.hpp" />
     <ClInclude Include="Primes.hpp" />
     <ClInclude Include="Matrix.hpp" />
     <ClInclude Include="stdafx.h" />
@@ -162,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ackermann.cpp" />
+    <ClCompile Include="Complex.cpp" />
     <ClCompile Include="Factorial.cpp" />
     <ClCompile Include="Fibonacci.cpp" />
     <ClCompile Include="Fun with Math.cpp" />
