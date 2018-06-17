@@ -67,7 +67,9 @@ namespace la {
 	template<typename T>
 	Vector<T>::Vector(Vector<T> &&other) noexcept
 		: mDimension(other.mDimension), mMatrix(other.mMatrix)
-	{}
+	{
+		std::cout << "Constructor\n";
+	}
 
 	template<typename T>
 	double Vector<T>::length() const {
@@ -186,6 +188,7 @@ namespace la {
 
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(const Vector<T> &other) {
+		std::cout << "Hi\n";
 		if (this != &other) {
 			mDimension = other.mDimension;
 			mMatrix = other.mMatrix;
@@ -195,6 +198,7 @@ namespace la {
 
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(Vector<T> &&other) {
+		std::cout << "Assignment\n";
 		if (this != &other) {
 			mDimension = other.mDimension;
 			mMatrix = other.mMatrix;
