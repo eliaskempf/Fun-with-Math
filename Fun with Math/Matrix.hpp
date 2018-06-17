@@ -76,7 +76,6 @@ namespace la {
 
 	template<typename T>
 	Matrix<T>::Matrix(const Matrix<T> &other) noexcept {
-		std::cout << "Copy constructor\n";
 		mRows = other.mRows;
 		mCols = other.mCols;
 		mEntries = new T[other.entries()];
@@ -85,7 +84,6 @@ namespace la {
 
 	template<typename T>
 	Matrix<T>::Matrix(Matrix<T> &&other) noexcept {
-		std::cout << "Move constructor\n";
 		mRows = other.mRows;
 		mCols = other.mCols;
 		mEntries = other.mEntries;
@@ -236,7 +234,7 @@ namespace la {
 	template<typename T>
 	Matrix<T> Matrix<T>::operator*(const double other) const {
 		Matrix<T> m(mRows, mCols);
-		for (size_t i = 0; i < this->entries(); i++) {
+		for (size_t i = 0; i < entries(); i++) {
 			m.mEntries[i] = mEntries[i] * other;
 		}
 		return m;
@@ -245,7 +243,7 @@ namespace la {
 	template<typename T>
 	Matrix<T> Matrix<T>::operator/(const double other) const {
 		Matrix<T> m(mRows, mCols);
-		for (size_t i = 0; i < this->entries(); i++) {
+		for (size_t i = 0; i < entries(); i++) {
 			m.mEntries[i] = mEntries[i] / other;
 		}
 		return m;
@@ -258,7 +256,7 @@ namespace la {
 		}
 
 		Matrix<T> m(mRows, mCols);
-		for (size_t i = 0; i < this->entries(); i++) {
+		for (size_t i = 0; i < entries(); i++) {
 			m.mEntries[i] = mEntries[i] + other.mEntries[i];
 		}
 		return m;
@@ -271,7 +269,7 @@ namespace la {
 		}
 
 		Matrix<T> m(mRows, mCols);
-		for (size_t i = 0; i < this->entries(); i++) {
+		for (size_t i = 0; i < entries(); i++) {
 			m.mEntries[i] = mEntries[i] - other.mEntries[i];
 		}
 		return m;
@@ -309,7 +307,6 @@ namespace la {
 
 	template<typename T>
 	Matrix<T>& Matrix<T>::operator=(const Matrix<T> &other) {
-		std::cout << "Copy assignment\n";
 		if (this != &other) {
 			if (this->entries() != other.entries()) {
 				delete[] mEntries;
@@ -324,7 +321,6 @@ namespace la {
 
 	template<typename T>
 	Matrix<T>& Matrix<T>::operator=(Matrix<T> &&other) {
-		std::cout << "Move assignment\n";
 		if (this != &other) {
 			delete[] mEntries;
 			mEntries = other.mEntries;

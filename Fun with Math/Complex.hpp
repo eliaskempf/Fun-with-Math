@@ -13,7 +13,7 @@ namespace la::fields {
 		Complex() = default;
 		Complex(double) noexcept;
 		Complex(double, double) noexcept;
-		Complex(const Complex &) noexcept = default;
+		Complex(const Complex &) = default;
 
 		// Member functions
 		double real() const;

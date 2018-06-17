@@ -3,10 +3,15 @@
 #include <stdexcept>
 #include <cmath>
 #include <iostream>
+#include <utility>
 
 namespace la {
 	template<typename T>
 	class Matrix;
+
+	namespace fields {
+		class Complex;
+	}
 
 	template<typename T = double>
 	class Vector {
@@ -66,14 +71,17 @@ namespace la {
 
 	template<typename T>
 	Vector<T>::Vector(Vector<T> &&other) noexcept
-		: mDimension(other.mDimension), mMatrix(other.mMatrix)
-	{
-		std::cout << "Constructor\n";
-	}
+		: mDimension(other.mDimension), mMatrix(std::forward<Matrix<T>>(other.mMatrix))
+	{}
 
 	template<typename T>
 	double Vector<T>::length() const {
 		return std::sqrt((*this) * (*this));
+	}
+
+	template<>
+	double Vector<fields::Complex>::length() const {
+		throw std::logic_error("No suitable sqrt function for class Complex.");
 	}
 
 	template<typename T>
@@ -83,20 +91,19 @@ namespace la {
 
 	template<typename T>
 	void Vector<T>::normalize() {
-		double norm = this->length();
+		if (std::is_integral<T>::value) {
+			throw std::logic_error("Can not normalize vector of integral type.");
+		}
+
+		double norm = length();
 		for (size_t i = 0; i < mDimension; i++) {
 			mMatrix(i, 0) /= norm;
 		}
 	}
 
-	template<>
-	void Vector<int>::normalize() {
-		throw std::logic_error("Can not normalize an integer vector.");
-	}
-
 	template<typename T>
 	double Vector<T>::angle(const Vector<T> &other) const {
-		return std::acos((*this * other) / (this->length() * other.length()));
+		return std::acos((*this * other) / (length() * other.length()));
 	}
 
 	template<typename T>
@@ -188,7 +195,6 @@ namespace la {
 
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(const Vector<T> &other) {
-		std::cout << "Hi\n";
 		if (this != &other) {
 			mDimension = other.mDimension;
 			mMatrix = other.mMatrix;
@@ -198,10 +204,9 @@ namespace la {
 
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(Vector<T> &&other) {
-		std::cout << "Assignment\n";
 		if (this != &other) {
 			mDimension = other.mDimension;
-			mMatrix = other.mMatrix;
+			mMatrix = std::forward<Matrix<T>>(other.mMatrix);
 		}
 		return *this;
 	}
