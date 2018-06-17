@@ -18,11 +18,15 @@ namespace la::fields {
 		return m_img;
 	}
 
+	double Complex::abs() const {
+		return std::sqrt(m_real * m_real + m_img * m_img);
+	}
+
 	Complex Complex::conjugate() const {
 		return Complex(m_real, -m_img);
 	}
 
-	Complex Complex::operator*(const double other) const {
+	Complex Complex::operator*(double other) const {
 		return Complex(m_real * other, m_img * other);
 	}
 
@@ -30,7 +34,7 @@ namespace la::fields {
 		return Complex((m_real * other.m_real - m_img * other.m_img), (m_real * other.m_img + m_img * other.m_real));
 	}
 
-	Complex Complex::operator/(const double other) const {
+	Complex Complex::operator/(double other) const {
 		return Complex(m_real / other, m_img / other);
 	}
 
@@ -39,7 +43,7 @@ namespace la::fields {
 		return (*this * conj) / (other * conj).m_real;
 	}
 
-	Complex Complex::operator+(const double other) const {
+	Complex Complex::operator+(double other) const {
 		return Complex(m_real + other, m_img);
 	}
 
@@ -47,7 +51,7 @@ namespace la::fields {
 		return Complex(m_real + other.m_real, m_img + other.m_img);
 	}
 
-	Complex Complex::operator-(const double other) const {
+	Complex Complex::operator-(double other) const {
 		return Complex(m_real - other, m_img);
 	}
 
@@ -55,7 +59,7 @@ namespace la::fields {
 		return Complex(m_real - other.m_real, m_img - other.m_img);
 	}
 
-	Complex& Complex::operator*=(const double other) {
+	Complex& Complex::operator*=(double other) {
 		*this = *this * other;
 		return *this;
 	}
@@ -65,7 +69,7 @@ namespace la::fields {
 		return *this;
 	}
 
-	Complex& Complex::operator/=(const double other) {
+	Complex& Complex::operator/=(double other) {
 		*this = *this / other;
 		return *this;
 	}
@@ -75,7 +79,7 @@ namespace la::fields {
 		return *this;
 	}
 
-	Complex& Complex::operator+=(const double other) {
+	Complex& Complex::operator+=(double other) {
 		*this = *this + other;
 		return *this;
 	}
@@ -85,7 +89,7 @@ namespace la::fields {
 		return *this;
 	}
 
-	Complex& Complex::operator-=(const double other) {
+	Complex& Complex::operator-=(double other) {
 		*this = *this - other;
 		return *this;
 	}
@@ -107,7 +111,7 @@ namespace la::fields {
 		return *this;
 	}
 
-	bool Complex::operator==(const double other) const {
+	bool Complex::operator==(double other) const {
 		return m_real == other && m_img == 0;
 	}
 
@@ -115,7 +119,7 @@ namespace la::fields {
 		return m_real == other.m_real && m_img == other.m_img;
 	}
 
-	bool Complex::operator!=(const double other) const {
+	bool Complex::operator!=(double other) const {
 		return m_real != other || m_img != 0;
 	}
 
@@ -123,19 +127,51 @@ namespace la::fields {
 		return m_real != other.m_real || m_img != other.m_img;
 	}
 
-	Complex operator*(const double x, const Complex &z) {
+	bool Complex::operator<(double other) const {
+		return abs() < other;
+	}
+
+	bool Complex::operator<(const Complex &other) const {
+		return abs() < other.abs();
+	}
+
+	bool Complex::operator>(double other) const {
+		return abs() > other;
+	}
+
+	bool Complex::operator>(const Complex &other) const {
+		return abs() > other.abs();
+	}
+
+	bool Complex::operator<=(double other) const {
+		return abs() <= other;
+	}
+
+	bool Complex::operator<=(const Complex &other) const {
+		return abs() <= other.abs();
+	}
+
+	bool Complex::operator>=(double other) const {
+		return abs() >= other;
+	}
+
+	bool Complex::operator>=(const Complex &other) const {
+		return abs() >= other.abs();
+	}
+
+	Complex operator*(double x, const Complex &z) {
 		return Complex(x * z.real(), x * z.img());
 	}
 
-	Complex operator/(const double x, const Complex &z) {
+	Complex operator/(double x, const Complex &z) {
 		return Complex(x, 0) / z;
 	}
 
-	Complex operator+(const double x, const Complex &z) {
+	Complex operator+(double x, const Complex &z) {
 		return Complex(x + z.real(), z.img());
 	}
 
-	Complex operator-(const double x, const Complex &z) {
+	Complex operator-(double x, const Complex &z) {
 		return Complex(x - z.real(), -z.img());
 	}
 

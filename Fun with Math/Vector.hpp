@@ -53,8 +53,10 @@ namespace la {
 		Vector& operator=(Vector &&);
 		bool operator==(const Vector &) const;
 		bool operator!=(const Vector &) const;
-		friend std::ostream& operator<<(std::ostream &, const Vector &);
 	};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream &, const Vector<T> &);
 
 	template<typename T>
 	Vector<T> operator*(const double, const Vector<T> &);
@@ -76,12 +78,12 @@ namespace la {
 
 	template<typename T>
 	double Vector<T>::length() const {
-		return std::sqrt((*this) * (*this));
-	}
-
-	template<>
-	double Vector<fields::Complex>::length() const {
-		throw std::logic_error("No suitable sqrt function for class Complex.");
+		if constexpr (std::is_arithmetic<T>::value) {
+			return std::sqrt((*this) * (*this));
+		}
+		else {
+			throw std::logic_error("Can not calculate length of non-arithmetic type vector.");
+		}
 	}
 
 	template<typename T>
@@ -225,8 +227,29 @@ namespace la {
 	}
 
 	// Test wise implementation
-	std::ostream& operator<<(std::ostream &os, const Vector<double> &v) {
-		os << v.mMatrix;
+	template<typename T>
+	std::ostream& operator<<(std::ostream &os, const Vector<T> &v) {
+		if constexpr (std::is_arithmetic<T>::value) {
+			T max = 0;
+			for (size_t i = 0; i < v.dimension(); i++) {
+				if (v[i] > max) { max = v[i]; }
+			}
+			int maxLength = std::log(max) / std::log(10) + 1.000001;
+			maxLength = std::max(maxLength, 1);
+			for (size_t i = 0; i < v.dimension(); i++) {
+				os << "| ";
+				int length = v[i] == 0 ? 1 : std::log(v[i]) / std::log(10) + 1.000001;
+				for (int j = length; j < maxLength; j++) {
+					os << " ";
+				}
+				os << v[i] << " |\n";
+			}
+		}
+		else {
+			for (size_t i = 0; i < v.dimension(); i++) {
+				os << "| " << v[i] << " |\n";
+			}
+		}
 		return os;
 	}
 

@@ -42,15 +42,15 @@ namespace la {
 		// Overloaded operators
 		T operator()(size_t, size_t) const;
 		T& operator()(size_t, size_t);
+		Matrix operator*(double) const;
 		Matrix operator*(const Matrix &) const;
 		Vector<T> operator*(const Vector<T> &) const;
-		Matrix operator*(const double) const;
-		Matrix operator/(const double) const;
+		Matrix operator/(double) const;
 		Matrix operator+(const Matrix &) const;
 		Matrix operator-(const Matrix &) const;
+		Matrix& operator*=(double);
 		Matrix& operator*=(const Matrix &);
-		Matrix& operator*=(const double);
-		Matrix& operator/=(const double);
+		Matrix& operator/=(double);
 		Matrix& operator+=(const Matrix &);
 		Matrix& operator-=(const Matrix &);
 		Matrix& operator=(const Matrix &);
@@ -61,7 +61,7 @@ namespace la {
 	};
 
 	template<typename T>
-	Matrix<T> operator*(const double, const Matrix<T> &);
+	Matrix<T> operator*(double, const Matrix<T> &);
 
 	template<typename T>
 	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal) noexcept
@@ -143,6 +143,15 @@ namespace la {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
 		return mEntries[i * mCols + j];
+	}
+
+	template<typename T>
+	Matrix<T> Matrix<T>::operator*(double other) const {
+		Matrix<T> m(mRows, mCols);
+		for (size_t i = 0; i < entries(); i++) {
+			m.mEntries[i] = mEntries[i] * other;
+		}
+		return m;
 	}
 
 	template<typename T>
@@ -232,16 +241,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator*(const double other) const {
-		Matrix<T> m(mRows, mCols);
-		for (size_t i = 0; i < entries(); i++) {
-			m.mEntries[i] = mEntries[i] * other;
-		}
-		return m;
-	}
-
-	template<typename T>
-	Matrix<T> Matrix<T>::operator/(const double other) const {
+	Matrix<T> Matrix<T>::operator/(double other) const {
 		Matrix<T> m(mRows, mCols);
 		for (size_t i = 0; i < entries(); i++) {
 			m.mEntries[i] = mEntries[i] / other;
@@ -276,19 +276,19 @@ namespace la {
 	}
 
 	template<typename T>
+	Matrix<T>& Matrix<T>::operator*=(double other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
 	Matrix<T>& Matrix<T>::operator*=(const Matrix<T> &other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator*=(const double other) {
-		*this = *this * other;
-		return *this;
-	}
-
-	template<typename T>
-	Matrix<T>& Matrix<T>::operator/=(const double other) {
+	Matrix<T>& Matrix<T>::operator/=(double other) {
 		*this = *this / other;
 		return *this;
 	}
@@ -408,7 +408,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> operator*(const double x, const Matrix<T> &m) {
+	Matrix<T> operator*(double x, const Matrix<T> &m) {
 		return m * x;
 	}
 }
