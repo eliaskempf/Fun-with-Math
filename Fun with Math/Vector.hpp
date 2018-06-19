@@ -9,21 +9,18 @@ namespace la {
 	template<typename T>
 	class Matrix;
 
-	namespace fields {
-		class Complex;
-	}
-
 	template<typename T = double>
 	class Vector {
 	private:
-		size_t mDimension;
-		Matrix<T> mMatrix;
+		size_t m_dimension;
+		Matrix<T> m_matrix;
 
 		friend Matrix<T>;
 
 	public:
 		// Constructors
 		explicit Vector(size_t, T = 0) noexcept;
+		Vector(std::initializer_list<T>);
 		Vector(const Vector &) noexcept;
 		Vector(Vector &&) noexcept;
 
@@ -63,17 +60,22 @@ namespace la {
 
 	template<typename T>
 	Vector<T>::Vector(size_t size, T defVal) noexcept
-		: mDimension(size), mMatrix(size, 1, defVal) 
+		: m_dimension(size), m_matrix(size, 1, defVal) 
+	{}
+
+	template<typename T>
+	Vector<T>::Vector(std::initializer_list<T> list)
+		: m_dimension(list.size()), m_matrix(list, false)
 	{}
 
 	template<typename T>
 	Vector<T>::Vector(const Vector<T> &other) noexcept
-		: mDimension(other.mDimension), mMatrix(other.mMatrix)
+		: m_dimension(other.m_dimension), m_matrix(other.m_matrix)
 	{}
 
 	template<typename T>
 	Vector<T>::Vector(Vector<T> &&other) noexcept
-		: mDimension(other.mDimension), mMatrix(std::forward<Matrix<T>>(other.mMatrix))
+		: m_dimension(other.m_dimension), m_matrix(std::forward<Matrix<T>>(other.m_matrix))
 	{}
 
 	template<typename T>
@@ -88,7 +90,7 @@ namespace la {
 
 	template<typename T>
 	size_t Vector<T>::dimension() const {
-		return mDimension;
+		return m_dimension;
 	}
 
 	template<typename T>
@@ -98,8 +100,8 @@ namespace la {
 		}
 
 		double norm = length();
-		for (size_t i = 0; i < mDimension; i++) {
-			mMatrix(i, 0) /= norm;
+		for (size_t i = 0; i < m_dimension; i++) {
+			m_matrix(i, 0) /= norm;
 		}
 	}
 
@@ -110,64 +112,64 @@ namespace la {
 
 	template<typename T>
 	T Vector<T>::operator[](size_t index) const {
-		if (index >= mDimension) {
+		if (index >= m_dimension) {
 			throw std::out_of_range("Exceeded vector range.");
 		}
-		return mMatrix(index, 0);
+		return m_matrix(index, 0);
 	}
 
 	template<typename T>
 	T& Vector<T>::operator[](size_t index) {
-		if (index >= mDimension) {
+		if (index >= m_dimension) {
 			throw std::out_of_range("Exceeded vector range.");
 		}
-		return mMatrix(index, 0);
+		return m_matrix(index, 0);
 	}
 
 	template<typename T>
 	T Vector<T>::operator*(const Vector<T> &other) const {
-		if (mDimension != other.mDimension) {
+		if (m_dimension != other.m_dimension) {
 			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
 		T scalar = 0;
-		for (size_t i = 0; i < mDimension; i++) { scalar += mMatrix(i, 0) * other.mMatrix(i, 0); }
+		for (size_t i = 0; i < m_dimension; i++) { scalar += m_matrix(i, 0) * other.m_matrix(i, 0); }
 		return scalar;
 	}
 
 	template<typename T>
 	Vector<T> Vector<T>::operator*(double other) const {
-		Vector<T> v(mDimension);
-		v.mMatrix = mMatrix * other;
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix * other;
 		return v;
 	}
 
 	template<typename T>
 	Vector<T> Vector<T>::operator/(double other) const {
-		Vector<T> v(mDimension);
-		v.mMatrix = mMatrix / other;
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix / other;
 		return v;
 	}
 
 	template<typename T>
 	Vector<T> Vector<T>::operator+(const Vector<T> &other) const {
-		if (mDimension != other.mDimension) {
+		if (m_dimension != other.m_dimension) {
 			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
-		Vector<T> v(mDimension);
-		v.mMatrix = mMatrix + other.mMatrix;
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix + other.m_matrix;
 		return v;
 	}
 
 	template<typename T>
 	Vector<T> Vector<T>::operator-(const Vector<T> &other) const {
-		if (mDimension != other.mDimension) {
+		if (m_dimension != other.m_dimension) {
 			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
-		Vector<T> v(mDimension);
-		v.mMatrix = mMatrix - other.mMatrix;
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix - other.m_matrix;
 		return v;
 	}
 
@@ -198,8 +200,8 @@ namespace la {
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(const Vector<T> &other) {
 		if (this != &other) {
-			mDimension = other.mDimension;
-			mMatrix = other.mMatrix;
+			m_dimension = other.m_dimension;
+			m_matrix = other.m_matrix;
 		}
 		return *this;
 	}
@@ -207,16 +209,16 @@ namespace la {
 	template<typename T>
 	Vector<T>& Vector<T>::operator=(Vector<T> &&other) {
 		if (this != &other) {
-			mDimension = other.mDimension;
-			mMatrix = std::forward<Matrix<T>>(other.mMatrix);
+			m_dimension = other.m_dimension;
+			m_matrix = std::forward<Matrix<T>>(other.m_matrix);
 		}
 		return *this;
 	}
 
 	template<typename T>
 	bool Vector<T>::operator==(const Vector<T> &other) const {
-		if (mDimension != other.mDimension) { return false; }
-		if (mMatrix != other.mMatrix) { return false; }
+		if (m_dimension != other.m_dimension) { return false; }
+		if (m_matrix != other.m_matrix) { return false; }
 		return true;
 	}
 
