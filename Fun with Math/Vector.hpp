@@ -41,12 +41,12 @@ namespace la {
 		T operator[](size_t) const;
 		T& operator[](size_t);
 		T operator*(const Vector &) const;
-		Vector operator*(const double &) const;
-		Vector operator/(const double &) const;
+		Vector operator*(double) const;
+		Vector operator/(double) const;
 		Vector operator+(const Vector &) const;
 		Vector operator-(const Vector &) const;
-		Vector& operator*=(const double &);
-		Vector& operator/=(const double &);
+		Vector& operator/=(double);
+		Vector& operator*=(double);
 		Vector& operator+=(const Vector &);
 		Vector& operator-=(const Vector &);
 		Vector& operator=(const Vector &);
@@ -136,14 +136,14 @@ namespace la {
 	}
 
 	template<typename T>
-	Vector<T> Vector<T>::operator*(const double &other) const {
+	Vector<T> Vector<T>::operator*(double other) const {
 		Vector<T> v(mDimension);
 		v.mMatrix = mMatrix * other;
 		return v;
 	}
 
 	template<typename T>
-	Vector<T> Vector<T>::operator/(const double &other) const {
+	Vector<T> Vector<T>::operator/(double other) const {
 		Vector<T> v(mDimension);
 		v.mMatrix = mMatrix / other;
 		return v;
@@ -172,13 +172,13 @@ namespace la {
 	}
 
 	template<typename T>
-	Vector<T>& Vector<T>::operator*=(const double &other) {
+	Vector<T>& Vector<T>::operator*=(double other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Vector<T>& Vector<T>::operator/=(const double &other) {
+	Vector<T>& Vector<T>::operator/=(double other) {
 		*this = *this / other;
 		return *this;
 	}
