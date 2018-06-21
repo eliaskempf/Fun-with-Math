@@ -60,3 +60,6 @@ namespace la::fields {
 	Complex operator-(double, const Complex &);
 	std::ostream& operator<<(std::ostream &, const Complex &);
 }
+
+la::fields::Complex operator""_i(long double);
+la::fields::Complex operator""_i(unsigned long long int);

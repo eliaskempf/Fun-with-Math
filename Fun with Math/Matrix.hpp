@@ -20,7 +20,7 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix(size_t, size_t, T = 0) noexcept;
+		Matrix(size_t, size_t, T = 0);
 		Matrix(std::initializer_list<T>, bool) noexcept;
 		Matrix(std::initializer_list<std::initializer_list<T>>);
 		Matrix(const Matrix &) noexcept;
@@ -34,12 +34,12 @@ namespace la {
 		size_t columns() const;
 		size_t entries() const;
 
+		// Calculate determinant
+		double det() const;
+
 		// Static methods
 		static Matrix IdentityMatrix(size_t);
 		static Matrix ElementaryMatrix(size_t, size_t, size_t, T);
-
-		// Calculate determinant
-		double det() const;
 
 		// Overloaded operators
 		T operator()(size_t, size_t) const;
@@ -59,14 +59,16 @@ namespace la {
 		Matrix& operator=(Matrix &&);
 		bool operator==(const Matrix &) const;
 		bool operator!=(const Matrix &) const;
-		friend std::ostream& operator<<(std::ostream &, const Matrix &);
 	};
 
 	template<typename T>
 	Matrix<T> operator*(double, const Matrix<T> &);
 
 	template<typename T>
-	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal) noexcept
+	std::ostream& operator<<(std::ostream &, const Matrix<T> &);
+
+	template<typename T>
+	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal)
 		: m_cols(cols), m_rows(rows) {
 		if (m_cols == 0 || m_rows == 0) {
 			throw std::logic_error("Matrix does not allow zero dimensions.");
@@ -137,6 +139,34 @@ namespace la {
 	template<typename T>
 	size_t Matrix<T>::entries() const {
 		return m_rows * m_cols;
+	}
+
+	template<typename T>
+	double Matrix<T>::det() const {
+		if (m_cols != m_rows) {
+			throw std::logic_error("Matrix has to be quadratic.");
+		}
+
+		if (m_cols <= 2) {
+			if (m_cols == 2) {
+				return m_entries[0] * m_entries[3] - m_entries[1] * m_entries[2];
+			}
+			else {
+				return m_entries[0];
+			}
+		}
+
+		double d = 0;
+		for (size_t j = 0; j < m_cols; j++) {
+			Matrix<T> sm(m_rows - 1, m_cols - 1);
+			int s = 0;
+			for (size_t i = 0; i < sm.entries(); i++) {
+				if ((i + s) % m_cols == j) { s++; }
+				sm.m_entries[i] = m_entries[i + m_cols + s];
+			}
+			d += m_entries[j] * std::pow(-1, j) * sm.det();
+		}
+		return d;
 	}
 
 	template<typename T>
@@ -377,67 +407,54 @@ namespace la {
 		return true;
 	}
 
+
 	template<typename T>
-	double Matrix<T>::det() const {
-		if (m_cols != m_rows) {
-			throw std::logic_error("Matrix has to be quadratic.");
-		}
-
-		if (m_cols <= 2) {
-			if (m_cols == 2) {
-				return m_entries[0] * m_entries[3] - m_entries[1] * m_entries[2];
-			}
-			else {
-				return m_entries[0];
-			}
-		}
-
-		double d = 0;
-		for (size_t j = 0; j < m_cols; j++) {
-			Matrix<T> sm(m_rows - 1, m_cols - 1);
-			int s = 0;
-			for (size_t i = 0; i < sm.entries(); i++) {
-				if ((i + s) % m_cols == j) { s++; }
-				sm.m_entries[i] = m_entries[i + m_cols + s];
-			}
-			d += m_entries[j] * std::pow(-1, j) * sm.det();
-		}
-		return d;
+	Matrix<T> operator*(double lhs, const Matrix<T> &m) {
+		return lhs * m;
 	}
 
 	// Test wise implementation
-	std::ostream& operator<<(std::ostream &os, const Matrix<double> &m) {
-		double max = 0;
-		double fMax = 0;
-		bool firstCol = false;
-		for (size_t i = 0; i < m.entries(); i++) {
-			if (m.m_entries[i] > max) {
-				max = m.m_entries[i];
-			}
+	template<typename T>
+	std::ostream& operator<<(std::ostream &os, const Matrix<T> &m) {
+		if constexpr (std::is_arithmetic<T>::value) {
+			T max = 0;
+			T fMax = 0;
+			bool firstCol = false;
+			for (size_t i = 0; i < m.rows(); i++) {
+				for (size_t j = 0; j < m.columns(); j++) {
+					if (m(i, j) > max) {
+						max = m(i, j);
+					}
 
-			if (i % m.m_cols == 0 && m.m_entries[i] > fMax) {
-				fMax = m.m_entries[i];
+					if (j == 0 && m(i, j) > fMax) {
+						fMax = m(i ,j);
+					}
+				}
+			}
+			int maxLength = std::log(max) / std::log(10) + 1.000001;
+			int fMaxLength = std::log(fMax) / std::log(10) + 1.000001;
+			maxLength = std::max(maxLength, 1);
+			fMaxLength = std::max(fMaxLength, 1);
+
+			for (size_t i = 0; i < m.rows(); i++) {
+				os << "| ";
+				for (size_t j = 0; j < m.columns(); j++) {
+					int length = m(i, j) == 0 ? 1 : std::log(m(i, j)) / std::log(10) + 1.000001;
+					for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
+					os << m(i, j) << " ";
+				}
+				os << "|\n";
 			}
 		}
-		int maxLength = std::log(max) / std::log(10) + 1.000001;
-		int fMaxLength = std::log(fMax) / std::log(10) + 1.000001;
-		maxLength = std::max(maxLength, 1);
-		fMaxLength = std::max(fMaxLength, 1);
-
-		for (size_t i = 0; i < m.m_rows; i++) {
-			os << "| ";
-			for (size_t j = 0; j < m.m_cols; j++) {
-				int length = m(i, j) == 0 ? 1 : std::log(m(i, j)) / std::log(10) + 1.000001;
-				for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
-				os << m(i, j) << " ";
+		else {
+			for (size_t i = 0; i < m.rows(); i++) {
+				os << "| ";
+				for (size_t j = 0; j < m.columns(); j++) {
+					os << m(i, j) << " ";
+				}
+				os << "|\n";
 			}
-			os << "|\n";
 		}
 		return os;
-	}
-
-	template<typename T>
-	Matrix<T> operator*(double x, const Matrix<T> &m) {
-		return m * x;
 	}
 }

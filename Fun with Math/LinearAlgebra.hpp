@@ -5,6 +5,9 @@
 #include "Fields.hpp"
 
 namespace la {
-	using matrix = Matrix<>;
-	using vector = Vector<>;
+	template<typename T = double>
+	using matrix = Matrix<T>;
+
+	template<typename T = double>
+	using vector = Vector<T>;
 }

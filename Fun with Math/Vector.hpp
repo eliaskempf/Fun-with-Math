@@ -39,11 +39,15 @@ namespace la {
 		T& operator[](size_t);
 		T operator*(const Vector &) const;
 		Vector operator*(double) const;
+		Vector operator*(const T &) const;
 		Vector operator/(double) const;
+		Vector operator/(const T &) const;
 		Vector operator+(const Vector &) const;
 		Vector operator-(const Vector &) const;
-		Vector& operator/=(double);
 		Vector& operator*=(double);
+		Vector& operator*=(const T &);
+		Vector& operator/=(double);
+		Vector& operator/=(const T &);
 		Vector& operator+=(const Vector &);
 		Vector& operator-=(const Vector &);
 		Vector& operator=(const Vector &);
@@ -52,11 +56,15 @@ namespace la {
 		bool operator!=(const Vector &) const;
 	};
 
-	template<typename T>
-	std::ostream& operator<<(std::ostream &, const Vector<T> &);
 
 	template<typename T>
-	Vector<T> operator*(const double, const Vector<T> &);
+	Vector<T> operator*(double, const Vector<T> &);
+
+	template<typename T>
+	Vector<T> operator*(const T &, const Vector<T> &);
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream &, const Vector<T> &);
 
 	template<typename T>
 	Vector<T>::Vector(size_t size, T defVal) noexcept
@@ -145,9 +153,23 @@ namespace la {
 	}
 
 	template<typename T>
+	Vector<T> Vector<T>::operator*(const T &other) const {
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix * other;
+		return v;
+	}
+
+	template<typename T>
 	Vector<T> Vector<T>::operator/(double other) const {
 		Vector<T> v(m_dimension);
 		v.m_matrix = m_matrix / other;
+		return v;
+	}
+
+	template<typename T>
+	Vector<T> Vector<T>::operator/(const T &other) const {
+		Vector<T> v(m_dimension);
+		v.m_matrix = m_matrix * other;
 		return v;
 	}
 
@@ -180,8 +202,20 @@ namespace la {
 	}
 
 	template<typename T>
+	Vector<T>& Vector<T>::operator*=(const T &other) {
+		*this = *this * other;
+		return *this;
+	}
+
+	template<typename T>
 	Vector<T>& Vector<T>::operator/=(double other) {
 		*this = *this / other;
+		return *this;
+	}
+
+	template<typename T>
+	Vector<T>& Vector<T>::operator/=(const T &other) {
+		*this = *this * other;
 		return *this;
 	}
 
@@ -228,6 +262,16 @@ namespace la {
 		return true;
 	}
 
+	template<typename T>
+	Vector<T> operator*(double lhs, const Vector<T> &v) {
+		return lhs * v;
+	}
+
+	template<typename T>
+	Vector<T> operator*(const T &lhs, const Vector<T> &rv) {
+		return lhs * v;
+	}
+
 	// Test wise implementation
 	template<typename T>
 	std::ostream& operator<<(std::ostream &os, const Vector<T> &v) {
@@ -253,10 +297,5 @@ namespace la {
 			}
 		}
 		return os;
-	}
-
-	template<typename T>
-	Vector<T> operator*(const double x, const Vector<T> &v) {
-		return v * x;
 	}
 }

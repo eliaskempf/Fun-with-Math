@@ -46,6 +46,15 @@ namespace la::fields {
 	};
 
 	template<uint32_t m>
+	ModuleRing<m> operator*(uint32_t, const ModuleRing<m> &);
+
+	template<uint32_t m>
+	ModuleRing<m> operator+(uint32_t, const ModuleRing<m> &);
+
+	template<uint32_t m>
+	ModuleRing<m> operator-(uint32_t, const ModuleRing<m> &);
+
+	template<uint32_t m>
 	std::ostream& operator<<(std::ostream &, const ModuleRing<m> &);
 
 	template<uint32_t m>
@@ -194,6 +203,21 @@ namespace la::fields {
 	template<uint32_t m>
 	bool ModuleRing<m>::operator>=(const ModuleRing<m> &other) const {
 		return m_value >= other.m_value;
+	}
+
+	template<uint32_t m>
+	ModuleRing<m> operator*(uint32_t lhs, const ModuleRing<m> &rhs) {
+		return rhs * lhs;
+	}
+
+	template<uint32_t m>
+	ModuleRing<m> operator+(uint32_t lhs, const ModuleRing<m> &rhs) {
+		return rhs + lhs;
+	}
+
+	template<uint32_t m>
+	ModuleRing<m> operator-(uint32_t lhs, const ModuleRing<m> &rhs) {
+		return rhs - lhs;
 	}
 
 	template<unsigned m>
