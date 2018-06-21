@@ -28,8 +28,8 @@ namespace la {
 		double length() const;
 		size_t dimension() const;
 
-		// Transform into norm
-		void normalize();
+		// Return normal vector
+		Vector<T> normalize() const;
 
 		// Calculate angle between vectors
 		double angle(const Vector &) const;
@@ -102,15 +102,13 @@ namespace la {
 	}
 
 	template<typename T>
-	void Vector<T>::normalize() {
+	Vector<T> Vector<T>::normalize() const {
 		if (std::is_integral<T>::value) {
 			throw std::logic_error("Can not normalize vector of integral type.");
 		}
 
 		double norm = length();
-		for (size_t i = 0; i < m_dimension; i++) {
-			m_matrix(i, 0) /= norm;
-		}
+		return *this / norm;
 	}
 
 	template<typename T>
