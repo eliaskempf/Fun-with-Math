@@ -34,8 +34,9 @@ namespace la {
 		size_t columns() const;
 		size_t entries() const;
 
-		// Calculate determinant
-		double det() const;
+		// Mathematical matrix operations
+		Matrix transpose() const;
+		T det() const;
 
 		// Static methods
 		static Matrix IdentityMatrix(size_t);
@@ -142,7 +143,13 @@ namespace la {
 	}
 
 	template<typename T>
-	double Matrix<T>::det() const {
+	Matrix<T> Matrix<T>::transpose() const {
+		Matrix<T> m(m_cols, m_rows);
+		return m;
+	}
+
+	template<typename T>
+	T Matrix<T>::det() const {
 		if (m_cols != m_rows) {
 			throw std::logic_error("Matrix has to be quadratic.");
 		}
@@ -156,7 +163,7 @@ namespace la {
 			}
 		}
 
-		double d = 0;
+		T d = 0;
 		for (size_t j = 0; j < m_cols; j++) {
 			Matrix<T> sm(m_rows - 1, m_cols - 1);
 			int s = 0;
