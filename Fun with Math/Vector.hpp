@@ -276,13 +276,13 @@ namespace la {
 		if constexpr (std::is_arithmetic<T>::value) {
 			T max = 0;
 			for (size_t i = 0; i < v.dimension(); i++) {
-				if (v[i] > max) { max = v[i]; }
+				if (std::abs(v[i]) > max) { max = std::abs(v[i]); }
 			}
 			int maxLength = std::log(max) / std::log(10) + 1.000001;
 			maxLength = std::max(maxLength, 1);
 			for (size_t i = 0; i < v.dimension(); i++) {
 				os << "| ";
-				int length = v[i] == 0 ? 1 : std::log(v[i]) / std::log(10) + 1.000001;
+				int length = v[i] == 0 ? 1 : std::log(std::abs(v[i])) / std::log(10) + 1.000001;
 				for (int j = length; j < maxLength; j++) {
 					os << " ";
 				}

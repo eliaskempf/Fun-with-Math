@@ -83,7 +83,7 @@ namespace la {
 		m_entries = new T[list.size()];
 		m_cols = mode ? list.size() : 1;
 		m_rows = mode ? 1 : list.size();
-		std::copy(list.begin(), list.end(), stdext::checked_array_iterator<T*>(m_entries, m_cols));
+		std::copy(list.begin(), list.end(), stdext::checked_array_iterator<T*>(m_entries, list.size()));
 	}
 
 	template<typename T>
@@ -99,7 +99,7 @@ namespace la {
 		m_entries = new T[m_rows * m_cols];
 
 		uint32_t index = 0;
-		for (const auto i : list) {
+		for (const auto &i : list) {
 			std::copy(i.begin(), i.end(), stdext::checked_array_iterator<T*>(m_entries + m_cols * index, m_cols));
 			index++;
 		}
@@ -422,8 +422,8 @@ namespace la {
 			bool firstCol = false;
 			for (size_t i = 0; i < m.rows(); i++) {
 				for (size_t j = 0; j < m.columns(); j++) {
-					if (m(i, j) > max) {
-						max = m(i, j);
+					if (std::abs(m(i, j)) > max) {
+						max = std::abs(m(i, j));
 					}
 
 					if (j == 0 && m(i, j) > fMax) {
@@ -439,8 +439,8 @@ namespace la {
 			for (size_t i = 0; i < m.rows(); i++) {
 				os << "| ";
 				for (size_t j = 0; j < m.columns(); j++) {
-					int length = m(i, j) == 0 ? 1 : std::log(m(i, j)) / std::log(10) + 1.000001;
-					for (int k = 0; k < (j == 0 ? fMaxLength : maxLength) - length; k++) { os << " "; }
+					int length = m(i, j) == 0 ? 1 : std::log(std::abs(m(i, j))) / std::log(10) + 1.000001;
+					for (int k = length; k < (j == 0 ? fMaxLength : maxLength); k++) { os << " "; }
 					os << m(i, j) << " ";
 				}
 				os << "|\n";
