@@ -10,10 +10,10 @@ namespace la::fields {
 
 	public:
 		// Constructor
-		Complex() = default;
-		Complex(double) noexcept;
-		Complex(double, double) noexcept;
-		Complex(const Complex &) = default;
+		constexpr Complex() = default;
+		constexpr explicit Complex(double) noexcept;
+		constexpr Complex(double, double) noexcept;
+		constexpr Complex(const Complex &) = default;
 
 		// Member functions
 		double real() const;
@@ -59,6 +59,14 @@ namespace la::fields {
 	Complex operator+(double, const Complex &);
 	Complex operator-(double, const Complex &);
 	std::ostream& operator<<(std::ostream &, const Complex &);
+
+	constexpr Complex::Complex(double re) noexcept
+		: m_real(re)
+	{}
+
+	constexpr Complex::Complex(double re, double im) noexcept
+		: m_real(re), m_img(im)
+	{}
 }
 
 la::fields::Complex operator""_i(long double);

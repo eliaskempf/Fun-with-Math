@@ -20,7 +20,7 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix(size_t, size_t, T = 0);
+		Matrix(size_t, size_t, T = T(0));
 		Matrix(std::initializer_list<T>, bool) noexcept;
 		Matrix(std::initializer_list<std::initializer_list<T>>);
 		Matrix(const Matrix &) noexcept;

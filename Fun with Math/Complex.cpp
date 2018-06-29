@@ -2,14 +2,6 @@
 #include "Complex.hpp"
 
 namespace la::fields {
-	Complex::Complex(double re) noexcept
-		: m_real(re)
-	{}
-
-	Complex::Complex(double re, double im) noexcept
-		: m_real(re), m_img(im)
-	{}
-
 	double Complex::real() const {
 		return m_real;
 	}

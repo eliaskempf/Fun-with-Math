@@ -10,8 +10,8 @@ namespace la::fields {
 
 	public:
 		// Constructors
-		ModuleRing() = default;
-		ModuleRing(uint32_t) noexcept;
+		constexpr ModuleRing() = default;
+		constexpr ModuleRing(uint32_t) noexcept;
 
 		// Member functions
 		uint32_t value() const;
@@ -58,7 +58,7 @@ namespace la::fields {
 	std::ostream& operator<<(std::ostream &, const ModuleRing<m> &);
 
 	template<uint32_t m>
-	ModuleRing<m>::ModuleRing(uint32_t value) noexcept
+	constexpr ModuleRing<m>::ModuleRing(uint32_t value) noexcept
 		: m_value(value % m)
 	{}
 

@@ -103,7 +103,7 @@ namespace la {
 
 	template<typename T>
 	Vector<T> Vector<T>::normalize() const {
-		if (std::is_integral<T>::value) {
+		if constexpr (std::is_integral<T>::value) {
 			throw std::logic_error("Can not normalize vector of integral type.");
 		}
 
