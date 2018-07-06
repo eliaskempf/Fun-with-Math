@@ -145,6 +145,12 @@ namespace la {
 	template<typename T>
 	Matrix<T> Matrix<T>::transpose() const {
 		Matrix<T> m(m_cols, m_rows);
+		
+		for (size_t i = 0; i < m_cols; i++) {
+			for (size_t j = 0; j < m_rows; j++) {
+				m(i, j) = m_entries[j * m_cols + i];
+			}
+		}
 		return m;
 	}
 
