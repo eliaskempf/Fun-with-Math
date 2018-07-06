@@ -20,6 +20,7 @@ namespace la {
 
 	public:
 		// Constructors
+		Matrix() = default;
 		Matrix(size_t, size_t, T = T(0));
 		Matrix(std::initializer_list<T>, bool) noexcept;
 		Matrix(std::initializer_list<std::initializer_list<T>>);
@@ -101,7 +102,7 @@ namespace la {
 
 		uint32_t index = 0;
 		for (const auto &i : list) {
-			std::copy(i.begin(), i.end(), stdext::checked_array_iterator<T*>(m_entries + m_cols * index, m_cols));
+			std::move(i.begin(), i.end(), stdext::checked_array_iterator<T*>(m_entries + m_cols * index, m_cols));
 			index++;
 		}
 	}
@@ -148,7 +149,7 @@ namespace la {
 		
 		for (size_t i = 0; i < m_cols; i++) {
 			for (size_t j = 0; j < m_rows; j++) {
-				m(i, j) = m_entries[j * m_cols + i];
+				m.m_entries[i * m_rows + j] = m_entries[j * m_cols + i];
 			}
 		}
 		return m;
