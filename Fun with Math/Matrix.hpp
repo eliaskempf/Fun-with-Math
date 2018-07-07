@@ -1,11 +1,12 @@
 #pragma once
 
-#include <stdexcept>
-#include <cmath>
-#include <iostream>
 #include <algorithm>
+#include <stdexcept>
+#include <iostream>
 #include <iterator>
+#include <future>
 #include <thread>
+#include <cmath>
 
 namespace la {
 	template <typename T>
@@ -20,7 +21,7 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix() = default;
+		Matrix() noexcept = default;
 		Matrix(size_t, size_t, T = T(0));
 		Matrix(std::initializer_list<T>, bool) noexcept;
 		Matrix(std::initializer_list<std::initializer_list<T>>);
@@ -234,36 +235,34 @@ namespace la {
 				                      match the columns of the original matrix.");
 		}
 
-		/*
-		int supportedThreads = std::thread::hardware_concurrency();
-		supportedThreads = supportedThreads == 0 ? 2 : supportedThreads;
+		size_t supportedThreads = std::max<size_t>(std::thread::hardware_concurrency(), 2);
 
-		const int minColsPerThread = 2;
+		const int minColsPerThread = 1;
 
-		int cols = m_rows > other.m_cols ? m_rows : other.m_cols;
-		int rows = m_rows > other.m_cols ? other.m_cols : m_rows;
+		size_t cols = m_rows > other.m_cols ? m_rows : other.m_cols;
+		size_t rows = m_rows > other.m_cols ? other.m_cols : m_rows;
 
 		Matrix<T> m(rows, cols);
 
-		int maxAmountOfThreads = (cols + minColsPerThread - 1) / minColsPerThread;
-		int amountOfThreads = supportedThreads > maxAmountOfThreads ? maxAmountOfThreads : supportedThreads;
+		size_t maxAmountOfThreads = (cols + minColsPerThread - 1) / minColsPerThread;
+		size_t amountOfThreads = supportedThreads > maxAmountOfThreads ? maxAmountOfThreads : supportedThreads;
 
-		int colsPerThread = cols / amountOfThreads;
+		size_t colsPerThread = cols / amountOfThreads;
 
-		std::thread* threads = new std::thread[amountOfThreads - 1];
+		std::future<void>* futures = new std::future<void>[amountOfThreads - 1];
 
 		for (int c = 0; c < amountOfThreads - 1; c++) {
-			threads[c] = std::thread([c, rows, m_cols, colsPerThread, this, other, &m]() {
+			futures[c] = std::async([c, rows, cols, colsPerThread, this, other, &m]() {
 				for (size_t i = 0; i < rows; i++) {
-					for (size_t k = c * colsPerThread; k < colsPerThread; k++) {
+					for (size_t k = c * colsPerThread; k < (c + 1) * colsPerThread; k++) {
 						T c_ik = 0;
 						for (size_t j = 0; j < m_cols; j++) {
 							c_ik += (*this)(i, j) * other(j, k);
 						}
-						m(i, k) = c_ik;
+						m.m_entries[i * rows + k] = c_ik;
 					}
 				}
-			}, std::ref(m));
+			});
 		}
 
 		for (size_t i = 0; i < rows; i++) {
@@ -272,31 +271,30 @@ namespace la {
 				for (size_t j = 0; j < m_cols; j++) {
 					c_ik += (*this)(i, j) * other(j, k);
 				}
-				m(i, k) = c_ik;
+				m.m_entries[i * rows + k] = c_ik;
 			}
 		}
 
 		for (int c = 0; c < amountOfThreads - 1; c++) {
-			threads[c].join();
+			futures[c].get();
 		}
 
 		if (rows != m_rows) {
 			m.m_rows = rows;
 			m.m_cols = cols;
 		}
-		*/
 
-		Matrix<T> m(m_rows, other.m_cols);
-
-		for (size_t i = 0; i < m.m_rows; i++) {
-			for (size_t k = 0; k < m.m_cols; k++) {
-				T c_ik = 0;
-				for (size_t j = 0; j < m_cols; j++) {
-					c_ik += (*this)(i, j) * other(j, k);
-				}
-				m(i, k) = c_ik;
-			}
-		}
+		// Matrix<T> m(m_rows, other.m_cols);
+		// 
+		// for (size_t i = 0; i < m.m_rows; i++) {
+		// 	for (size_t k = 0; k < m.m_cols; k++) {
+		// 		T c_ik = 0;
+		// 		for (size_t j = 0; j < m_cols; j++) {
+		// 			c_ik += (*this)(i, j) * other(j, k);
+		// 		}
+		// 		m(i, k) = c_ik;
+		// 	}
+		// }
 		
 		return m;
 	}

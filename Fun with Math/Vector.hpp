@@ -1,9 +1,9 @@
 #pragma once
 
 #include <stdexcept>
-#include <cmath>
 #include <iostream>
 #include <utility>
+#include <cmath>
 
 namespace la {
 	template<typename T>
