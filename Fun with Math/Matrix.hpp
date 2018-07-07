@@ -239,8 +239,8 @@ namespace la {
 
 		const int minColsPerThread = 1;
 
-		size_t cols = m_rows > other.m_cols ? m_rows : other.m_cols;
-		size_t rows = m_rows > other.m_cols ? other.m_cols : m_rows;
+		size_t rows = m_rows; // std::min(m_rows, other.m_cols);
+		size_t cols = other.m_cols; // std::max(m_rows, other.m_cols);
 
 		Matrix<T> m(rows, cols);
 
@@ -251,15 +251,17 @@ namespace la {
 
 		std::future<void>* futures = new std::future<void>[amountOfThreads - 1];
 
+		std::cout << "Threads started: " << amountOfThreads << std::endl;
+
 		for (int c = 0; c < amountOfThreads - 1; c++) {
 			futures[c] = std::async([c, rows, cols, colsPerThread, this, other, &m]() {
 				for (size_t i = 0; i < rows; i++) {
 					for (size_t k = c * colsPerThread; k < (c + 1) * colsPerThread; k++) {
 						T c_ik = 0;
 						for (size_t j = 0; j < m_cols; j++) {
-							c_ik += (*this)(i, j) * other(j, k);
+							c_ik += m_entries[i * m_cols + j] * other.m_entries[j * other.m_cols + k];
 						}
-						m.m_entries[i * rows + k] = c_ik;
+						m.m_entries[i * cols + k] = c_ik;
 					}
 				}
 			});
@@ -269,9 +271,9 @@ namespace la {
 			for (size_t k = (amountOfThreads - 1) * colsPerThread; k < cols; k++) {
 				T c_ik = 0;
 				for (size_t j = 0; j < m_cols; j++) {
-					c_ik += (*this)(i, j) * other(j, k);
+					c_ik += m_entries[i * m_cols + j] * other.m_entries[j * other.m_cols + k];
 				}
-				m.m_entries[i * rows + k] = c_ik;
+				m.m_entries[i * cols + k] = c_ik;
 			}
 		}
 
@@ -280,8 +282,9 @@ namespace la {
 		}
 
 		if (rows != m_rows) {
-			m.m_rows = rows;
-			m.m_cols = cols;
+			m.m_rows = cols;
+			m.m_cols = rows;
+			std::cout << "Shifted" << std::endl;
 		}
 
 		// Matrix<T> m(m_rows, other.m_cols);
