@@ -235,9 +235,8 @@ namespace la {
 				                      match the columns of the original matrix.");
 		}
 
+		const size_t minColsPerThread = 50;
 		size_t supportedThreads = std::max<size_t>(std::thread::hardware_concurrency(), 2);
-
-		const int minColsPerThread = 1;
 
 		size_t rows = m_rows; // std::min(m_rows, other.m_cols);
 		size_t cols = other.m_cols; // std::max(m_rows, other.m_cols);
@@ -250,8 +249,6 @@ namespace la {
 		size_t colsPerThread = cols / amountOfThreads;
 
 		std::future<void>* futures = new std::future<void>[amountOfThreads - 1];
-
-		std::cout << "Threads started: " << amountOfThreads << std::endl;
 
 		for (int c = 0; c < amountOfThreads - 1; c++) {
 			futures[c] = std::async([c, rows, cols, colsPerThread, this, other, &m]() {
@@ -281,23 +278,12 @@ namespace la {
 			futures[c].get();
 		}
 
+		delete[] futures;
+
 		if (rows != m_rows) {
 			m.m_rows = cols;
 			m.m_cols = rows;
-			std::cout << "Shifted" << std::endl;
 		}
-
-		// Matrix<T> m(m_rows, other.m_cols);
-		// 
-		// for (size_t i = 0; i < m.m_rows; i++) {
-		// 	for (size_t k = 0; k < m.m_cols; k++) {
-		// 		T c_ik = 0;
-		// 		for (size_t j = 0; j < m_cols; j++) {
-		// 			c_ik += (*this)(i, j) * other(j, k);
-		// 		}
-		// 		m(i, k) = c_ik;
-		// 	}
-		// }
 		
 		return m;
 	}
