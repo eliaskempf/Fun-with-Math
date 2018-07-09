@@ -86,7 +86,7 @@ namespace la {
 		m_entries = new T[list.size()];
 		m_cols = mode ? list.size() : 1;
 		m_rows = mode ? 1 : list.size();
-		std::copy(list.begin(), list.end(), stdext::checked_array_iterator<T*>(m_entries, list.size()));
+		std::move(list.begin(), list.end(), stdext::checked_array_iterator<T*>(m_entries, list.size()));
 	}
 
 	template<typename T>
