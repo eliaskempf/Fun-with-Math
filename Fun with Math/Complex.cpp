@@ -169,9 +169,9 @@ namespace la::fields {
 
 	std::ostream& operator<<(std::ostream &os, const Complex &z) {
 		if (z.abs() == 0) { os << 0; return os; }
-		if (z.real() != 0) { os << z.real() << (z.img() < 0 ? " - " : " + "); }
+		if (z.real() != 0) { os << "(" << z.real() << (z.img() < 0 ? " - " : " + "); }
 		if (std::abs(z.img()) != 1) { os << std::abs(z.img()); }
-		os << "i";
+		os << "i)";
 		return os;
 	}
 }
