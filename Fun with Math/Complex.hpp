@@ -9,7 +9,7 @@ namespace la::fields {
 		double m_img = 0;
 
 	public:
-		// Constructor
+		// Constructors
 		constexpr Complex() = default;
 		constexpr explicit Complex(double) noexcept;
 		constexpr Complex(double, double) noexcept;

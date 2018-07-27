@@ -29,7 +29,7 @@ namespace la {
 		size_t dimension() const;
 
 		// Return normal vector
-		Vector<T> normalize() const;
+		Vector normalize() const;
 
 		// Calculate angle between vectors
 		double angle(const Vector &) const;
