@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Complex.hpp"
 
-namespace la::fields {
+namespace la {
 	double Complex::real() const {
 		return m_real;
 	}
@@ -176,10 +176,10 @@ namespace la::fields {
 	}
 }
 
-la::fields::Complex operator""_i(long double x) {
-	return la::fields::Complex(0, x);
+la::Complex operator""_i(long double x) {
+	return la::Complex(0, x);
 }
 
-la::fields::Complex operator""_i(unsigned long long int x) {
-	return la::fields::Complex(0, x);
+la::Complex operator""_i(unsigned long long int x) {
+	return la::Complex(0, x);
 }

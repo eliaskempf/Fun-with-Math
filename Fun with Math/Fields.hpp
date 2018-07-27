@@ -3,7 +3,7 @@
 #include "Complex.hpp"
 #include "ModuleRing.hpp"
 
-namespace la::fields {
+namespace la {
 	using complex = Complex;
 
 	template<uint32_t m>

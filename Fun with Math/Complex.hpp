@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace la::fields {
+namespace la {
 	class Complex {
 	private:
 		double m_real = 0;
@@ -69,5 +69,5 @@ namespace la::fields {
 	{}
 }
 
-la::fields::Complex operator""_i(long double);
-la::fields::Complex operator""_i(unsigned long long int);
+la::Complex operator""_i(long double);
+la::Complex operator""_i(unsigned long long int);

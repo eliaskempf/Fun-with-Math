@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace la::fields {
+namespace la {
 	template<uint32_t m>
 	class ModuleRing {
 	private:
