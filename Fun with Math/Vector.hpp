@@ -266,7 +266,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Vector<T> operator*(const T &lhs, const Vector<T> &rv) {
+	Vector<T> operator*(const T &lhs, const Vector<T> &v) {
 		return lhs * v;
 	}
 

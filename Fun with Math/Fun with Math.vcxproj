@@ -150,7 +150,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ackermann.hpp" />
+    <ClInclude Include="Change.hpp" />
     <ClInclude Include="Complex.hpp" />
+    <ClInclude Include="EulersPhi.hpp" />
     <ClInclude Include="Factorial.hpp" />
     <ClInclude Include="Fibonacci.hpp" />
     <ClInclude Include="Fields.hpp" />
@@ -162,11 +164,14 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="threeNplusOne.hpp" />
     <ClInclude Include="tnpo_parallel.hpp" />
+    <ClInclude Include="Trigonometry.hpp" />
     <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ackermann.cpp" />
+    <ClCompile Include="Changes.cpp" />
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="EulersPhi.cpp" />
     <ClCompile Include="Factorial.cpp" />
     <ClCompile Include="Fibonacci.cpp" />
     <ClCompile Include="Fun with Math.cpp" />
@@ -179,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="threeNplusOne.cpp" />
     <ClCompile Include="tnpo_parallel.cpp" />
+    <ClCompile Include="Trigonometry.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

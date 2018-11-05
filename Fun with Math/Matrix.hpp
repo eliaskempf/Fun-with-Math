@@ -38,6 +38,7 @@ namespace la {
 
 		// Mathematical matrix operations
 		Matrix transpose() const;
+		Matrix gauss() const;
 		T det() const;
 
 		// Static methods
@@ -151,6 +152,34 @@ namespace la {
 		for (size_t i = 0; i < m_cols; i++) {
 			for (size_t j = 0; j < m_rows; j++) {
 				m.m_entries[i * m_rows + j] = m_entries[j * m_cols + i];
+			}
+		}
+		return m;
+	}
+
+	template<typename T>
+	Matrix<T> Matrix<T>::gauss() const {
+		Matrix<T> m(*this);
+
+		for (size_t j = 0; j < m_cols; j++) {
+			T t1 = m.m_entries[j * (m_cols + 1)];
+			if (t1 == T(0)) {
+				for (size_t i = j + 1; i < m_rows; i++) {
+					if (m.m_entries[j * (m_cols + 1) + (i - j) * m_cols] != T(0)) {
+						std::swap_ranges(m.m_entries + j * m_cols, m.m_entries + (j + 1) * m_cols,
+							stdext::checked_array_iterator<T*>(m.m_entries + i * m_cols, m_cols));
+						t1 = m.m_entries[j * (m_cols + 1)];
+						break;
+					}
+				}
+			}
+			for (size_t i = j + 1; i < m_rows; i++) {
+				T t2 = m.m_entries[i * m_cols + j];
+				if (t2 == T(0)) { continue; }
+				std::transform(m.m_entries + j * m_cols, m.m_entries + (j + 1) * m_cols,
+					           stdext::checked_array_iterator<T*>(m.m_entries + i * m_cols, m_cols),
+					           stdext::checked_array_iterator<T*>(m.m_entries + i * m_cols, m_cols),
+					[t1, t2](T first, T second) { return second - first * (t2 / t1); });
 			}
 		}
 		return m;
