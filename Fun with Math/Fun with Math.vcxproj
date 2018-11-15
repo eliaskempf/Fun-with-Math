@@ -152,6 +152,7 @@
     <ClInclude Include="Ackermann.hpp" />
     <ClInclude Include="Change.hpp" />
     <ClInclude Include="Complex.hpp" />
+    <ClInclude Include="dea.hpp" />
     <ClInclude Include="EulersPhi.hpp" />
     <ClInclude Include="Factorial.hpp" />
     <ClInclude Include="Fibonacci.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="ModuleRing.hpp" />
     <ClInclude Include="Primes.hpp" />
     <ClInclude Include="Matrix.hpp" />
+    <ClInclude Include="reg.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="threeNplusOne.hpp" />
@@ -171,6 +173,7 @@
     <ClCompile Include="Ackermann.cpp" />
     <ClCompile Include="Changes.cpp" />
     <ClCompile Include="Complex.cpp" />
+    <ClCompile Include="dea.cpp" />
     <ClCompile Include="EulersPhi.cpp" />
     <ClCompile Include="Factorial.cpp" />
     <ClCompile Include="Fibonacci.cpp" />
