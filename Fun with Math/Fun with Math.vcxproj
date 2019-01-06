@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ackermann.hpp" />
+    <ClInclude Include="BigInteger.hpp" />
     <ClInclude Include="Change.hpp" />
     <ClInclude Include="Complex.hpp" />
     <ClInclude Include="dea.hpp" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ackermann.cpp" />
+    <ClCompile Include="BigInteger.cpp" />
     <ClCompile Include="Changes.cpp" />
     <ClCompile Include="Complex.cpp" />
     <ClCompile Include="dea.cpp" />

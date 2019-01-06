@@ -78,6 +78,9 @@
     <ClInclude Include="dea.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="BigInteger.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -117,6 +120,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="dea.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="BigInteger.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
