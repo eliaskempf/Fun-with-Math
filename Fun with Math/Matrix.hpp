@@ -10,10 +10,10 @@
 
 namespace la {
 	template <typename T>
-	class Vector;
+	class vector;
 
 	template<typename T = double>
-	class Matrix {
+	class matrix {
 	private:
 		T * m_entries;
 		size_t m_rows;
@@ -21,15 +21,15 @@ namespace la {
 
 	public:
 		// Constructors
-		Matrix() noexcept = default;
-		Matrix(size_t, size_t, T = T(0));
-		Matrix(std::initializer_list<T>, bool) noexcept;
-		Matrix(std::initializer_list<std::initializer_list<T>>);
-		Matrix(const Matrix &) noexcept;
-		Matrix(Matrix &&) noexcept;
+		matrix() noexcept = default;
+		matrix(size_t, size_t, T = T(0));
+		matrix(std::initializer_list<T>, bool) noexcept;
+		matrix(std::initializer_list<std::initializer_list<T>>);
+		matrix(const matrix &) noexcept;
+		matrix(matrix &&) noexcept;
 
 		// Destructor
-		virtual ~Matrix();
+		virtual ~matrix();
 
 		// getter for the dimensions
 		size_t rows() const;
@@ -37,45 +37,45 @@ namespace la {
 		size_t entries() const;
 
 		// Mathematical matrix operations
-		Matrix transpose() const;
-		Matrix gauss() const;
+		matrix transpose() const;
+		matrix gauss() const;
 		T det() const;
 
 		// Static methods
-		static Matrix IdentityMatrix(size_t);
-		static Matrix ElementaryMatrix(size_t, size_t, size_t, T);
+		static matrix Identitymatrix(size_t);
+		static matrix Elementarymatrix(size_t, size_t, size_t, T);
 
 		// Overloaded operators
 		T operator()(size_t, size_t) const;
 		T& operator()(size_t, size_t);
-		Matrix operator*(double) const;
-		Matrix operator*(const Matrix &) const;
-		Vector<T> operator*(const Vector<T> &) const;
-		Matrix operator/(double) const;
-		Matrix operator+(const Matrix &) const;
-		Matrix operator-(const Matrix &) const;
-		Matrix& operator*=(double);
-		Matrix& operator*=(const Matrix &);
-		Matrix& operator/=(double);
-		Matrix& operator+=(const Matrix &);
-		Matrix& operator-=(const Matrix &);
-		Matrix& operator=(const Matrix &);
-		Matrix& operator=(Matrix &&);
-		bool operator==(const Matrix &) const;
-		bool operator!=(const Matrix &) const;
+		matrix operator*(double) const;
+		matrix operator*(const matrix &) const;
+		vector<T> operator*(const vector<T> &) const;
+		matrix operator/(double) const;
+		matrix operator+(const matrix &) const;
+		matrix operator-(const matrix &) const;
+		matrix& operator*=(double);
+		matrix& operator*=(const matrix &);
+		matrix& operator/=(double);
+		matrix& operator+=(const matrix &);
+		matrix& operator-=(const matrix &);
+		matrix& operator=(const matrix &);
+		matrix& operator=(matrix &&);
+		bool operator==(const matrix &) const;
+		bool operator!=(const matrix &) const;
 	};
 
 	template<typename T>
-	Matrix<T> operator*(double, const Matrix<T> &);
+	matrix<T> operator*(double, const matrix<T> &);
 
 	template<typename T>
-	std::ostream& operator<<(std::ostream &, const Matrix<T> &);
+	std::ostream& operator<<(std::ostream &, const matrix<T> &);
 
 	template<typename T>
-	Matrix<T>::Matrix(size_t rows, size_t cols, T defVal)
+	matrix<T>::matrix(size_t rows, size_t cols, T defVal)
 		: m_cols(cols), m_rows(rows) {
 		if (m_cols == 0 || m_rows == 0) {
-			throw std::logic_error("Matrix does not allow zero dimensions.");
+			throw std::logic_error("matrix does not allow zero dimensions.");
 		}
 
 		m_entries = new T[rows * cols];
@@ -83,7 +83,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(std::initializer_list<T> list, bool mode) noexcept {
+	matrix<T>::matrix(std::initializer_list<T> list, bool mode) noexcept {
 		m_entries = new T[list.size()];
 		m_cols = mode ? list.size() : 1;
 		m_rows = mode ? 1 : list.size();
@@ -91,7 +91,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> list) {
+	matrix<T>::matrix(std::initializer_list<std::initializer_list<T>> list) {
 		for (const auto i : list) {
 			if (i.size() != list.begin()->size()) {
 				throw std::runtime_error("All rows have to be equal in length.");
@@ -110,7 +110,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(const Matrix<T> &other) noexcept {
+	matrix<T>::matrix(const matrix<T> &other) noexcept {
 		m_rows = other.m_rows;
 		m_cols = other.m_cols;
 		m_entries = new T[other.entries()];
@@ -118,7 +118,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>::Matrix(Matrix<T> &&other) noexcept {
+	matrix<T>::matrix(matrix<T> &&other) noexcept {
 		m_rows = other.m_rows;
 		m_cols = other.m_cols;
 		m_entries = other.m_entries;
@@ -126,28 +126,28 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>::~Matrix() {
+	matrix<T>::~matrix() {
 		delete[] m_entries;
 	}
 
 	template<typename T>
-	size_t Matrix<T>::rows() const {
+	size_t matrix<T>::rows() const {
 		return m_rows;
 	}
 
 	template<typename T>
-	size_t Matrix<T>::columns() const {
+	size_t matrix<T>::columns() const {
 		return m_cols;
 	}
 
 	template<typename T>
-	size_t Matrix<T>::entries() const {
+	size_t matrix<T>::entries() const {
 		return m_rows * m_cols;
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::transpose() const {
-		Matrix<T> m(m_cols, m_rows);
+	matrix<T> matrix<T>::transpose() const {
+		matrix<T> m(m_cols, m_rows);
 		
 		for (size_t i = 0; i < m_cols; i++) {
 			for (size_t j = 0; j < m_rows; j++) {
@@ -158,8 +158,8 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::gauss() const {
-		Matrix<T> m(*this);
+	matrix<T> matrix<T>::gauss() const {
+		matrix<T> m(*this);
 
 		for (size_t j = 0; j < m_cols; j++) {
 			T t1 = m.m_entries[j * (m_cols + 1)];
@@ -186,9 +186,9 @@ namespace la {
 	}
 
 	template<typename T>
-	T Matrix<T>::det() const {
+	T matrix<T>::det() const {
 		if (m_cols != m_rows) {
-			throw std::logic_error("Matrix has to be quadratic.");
+			throw std::logic_error("matrix has to be quadratic.");
 		}
 
 		if (m_cols <= 2) {
@@ -202,7 +202,7 @@ namespace la {
 
 		T d = 0;
 		for (size_t j = 0; j < m_cols; j++) {
-			Matrix<T> sm(m_rows - 1, m_cols - 1);
+			matrix<T> sm(m_rows - 1, m_cols - 1);
 			int s = 0;
 			for (size_t i = 0; i < sm.entries(); i++) {
 				if ((i + s) % m_cols == j) { s++; }
@@ -214,8 +214,8 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::IdentityMatrix(size_t size) {
-		Matrix<T> m(size, size);
+	matrix<T> matrix<T>::Identitymatrix(size_t size) {
+		matrix<T> m(size, size);
 		for (int i = 0; i < size; i++) {
 			m(i, i) = 1;
 		}
@@ -223,8 +223,8 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::ElementaryMatrix(size_t size, size_t row, size_t col, T val) {
-		Matrix<T> m(size, size);
+	matrix<T> matrix<T>::Elementarymatrix(size_t size, size_t row, size_t col, T val) {
+		matrix<T> m(size, size);
 		for (int i = 0; i < size; i++) {
 			m(i, i) = 1;
 		}
@@ -233,7 +233,7 @@ namespace la {
 	}
 
 	template<typename T>
-	T Matrix<T>::operator()(size_t i, size_t j) const {
+	T matrix<T>::operator()(size_t i, size_t j) const {
 		if (i >= m_rows || j >= m_cols) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
@@ -241,7 +241,7 @@ namespace la {
 	}
 
 	template<typename T>
-	T& Matrix<T>::operator()(size_t i, size_t j) {
+	T& matrix<T>::operator()(size_t i, size_t j) {
 		if (i >= m_rows || j >= m_cols) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
@@ -249,8 +249,8 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator*(double other) const {
-		Matrix<T> m(m_rows, m_cols);
+	matrix<T> matrix<T>::operator*(double other) const {
+		matrix<T> m(m_rows, m_cols);
 		for (size_t i = 0; i < entries(); i++) {
 			m.m_entries[i] = m_entries[i] * other;
 		}
@@ -258,7 +258,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) const {
+	matrix<T> matrix<T>::operator*(const matrix<T> &other) const {
 		if (m_cols != other.m_rows) {
 			throw std::runtime_error("Can not multiply by a matrix which rows does not \
 				                      match the columns of the original matrix.");
@@ -270,7 +270,7 @@ namespace la {
 		size_t rows = m_rows; // std::min(m_rows, other.m_cols);
 		size_t cols = other.m_cols; // std::max(m_rows, other.m_cols);
 
-		Matrix<T> m(rows, cols);
+		matrix<T> m(rows, cols);
 
 		size_t maxAmountOfThreads = (cols + minColsPerThread - 1) / minColsPerThread;
 		size_t amountOfThreads = supportedThreads > maxAmountOfThreads ? maxAmountOfThreads : supportedThreads;
@@ -318,20 +318,20 @@ namespace la {
 	}
 
 	template<typename T>
-	Vector<T> Matrix<T>::operator*(const Vector<T> &other) const {
+	vector<T> matrix<T>::operator*(const vector<T> &other) const {
 		if (m_cols != other.mDimension) {
 			throw std::runtime_error("Can not multiply by a vector which dimension does \
 									  not match the columns of the matrix.");
 		}
 
-		Vector<T> v(m_rows);
-		v.mMatrix = *this * other.mMatrix;
+		vector<T> v(m_rows);
+		v.mmatrix = *this * other.mmatrix;
 		return v;
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator/(double other) const {
-		Matrix<T> m(m_rows, m_cols);
+	matrix<T> matrix<T>::operator/(double other) const {
+		matrix<T> m(m_rows, m_cols);
 		for (size_t i = 0; i < entries(); i++) {
 			m.m_entries[i] = m_entries[i] / other;
 		}
@@ -339,12 +339,12 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const {
+	matrix<T> matrix<T>::operator+(const matrix<T> &other) const {
 		if (m_rows != other.m_rows || m_cols != other.m_cols) {
 			throw std::runtime_error("Dimensions of matrices can not differ from each other.");
 		}
 
-		Matrix<T> m(m_rows, m_cols);
+		matrix<T> m(m_rows, m_cols);
 		for (size_t i = 0; i < entries(); i++) {
 			m.m_entries[i] = m_entries[i] + other.m_entries[i];
 		}
@@ -352,12 +352,12 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T> Matrix<T>::operator-(const Matrix<T> &other) const {
+	matrix<T> matrix<T>::operator-(const matrix<T> &other) const {
 		if (m_rows != other.m_rows || m_cols != other.m_cols) {
 			throw std::runtime_error("Dimensions of matrices can not differ from each other.");
 		}
 
-		Matrix<T> m(m_rows, m_cols);
+		matrix<T> m(m_rows, m_cols);
 		for (size_t i = 0; i < entries(); i++) {
 			m.m_entries[i] = m_entries[i] - other.m_entries[i];
 		}
@@ -365,37 +365,37 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator*=(double other) {
+	matrix<T>& matrix<T>::operator*=(double other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator*=(const Matrix<T> &other) {
+	matrix<T>& matrix<T>::operator*=(const matrix<T> &other) {
 		*this = *this * other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator/=(double other) {
+	matrix<T>& matrix<T>::operator/=(double other) {
 		*this = *this / other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator+=(const Matrix<T> &other) {
+	matrix<T>& matrix<T>::operator+=(const matrix<T> &other) {
 		*this = *this + other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator-=(const Matrix<T> &other) {
+	matrix<T>& matrix<T>::operator-=(const matrix<T> &other) {
 		*this = *this - other;
 		return *this;
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator=(const Matrix<T> &other) {
+	matrix<T>& matrix<T>::operator=(const matrix<T> &other) {
 		if (this != &other) {
 			if (this->entries() != other.entries()) {
 				delete[] m_entries;
@@ -409,7 +409,7 @@ namespace la {
 	}
 
 	template<typename T>
-	Matrix<T>& Matrix<T>::operator=(Matrix<T> &&other) {
+	matrix<T>& matrix<T>::operator=(matrix<T> &&other) {
 		if (this != &other) {
 			delete[] m_entries;
 			m_entries = other.m_entries;
@@ -421,7 +421,7 @@ namespace la {
 	}
 
 	template<typename T>
-	bool Matrix<T>::operator==(const Matrix &other) const {
+	bool matrix<T>::operator==(const matrix &other) const {
 		if (m_rows != other.m_rows || m_cols != other.m_cols) { return false; }
 		for (size_t i = 0; i < other.entries(); i++) {
 			if (m_entries[i] != other.m_entries[i]) {
@@ -432,20 +432,20 @@ namespace la {
 	}
 
 	template<typename T>
-	bool Matrix<T>::operator!=(const Matrix &other) const {
+	bool matrix<T>::operator!=(const matrix &other) const {
 		if (*this == other) { return false; }
 		return true;
 	}
 
 
 	template<typename T>
-	Matrix<T> operator*(double lhs, const Matrix<T> &m) {
+	matrix<T> operator*(double lhs, const matrix<T> &m) {
 		return lhs * m;
 	}
 
 	// Test wise implementation
 	template<typename T>
-	std::ostream& operator<<(std::ostream &os, const Matrix<T> &m) {
+	std::ostream& operator<<(std::ostream &os, const matrix<T> &m) {
 		if constexpr (std::is_arithmetic<T>::value) {
 			T max = 0;
 			T fMax = 0;
