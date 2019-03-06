@@ -63,22 +63,10 @@
     <ClInclude Include="ModuleRing.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Change.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Trigonometry.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="EulersPhi.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="reg.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="dea.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="BigInteger.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,19 +98,10 @@
     <ClCompile Include="Complex.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Changes.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Trigonometry.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="EulersPhi.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="dea.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="BigInteger.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

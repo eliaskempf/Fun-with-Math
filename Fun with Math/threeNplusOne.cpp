@@ -3,7 +3,7 @@
 #include <iostream>
 
 unsigned long long tnpo(unsigned long long n) {
-	//std::cout << n << std::endl;
+	// std::cout << n << std::endl;
 	if (n == 1) {
 		return n;
 	}
