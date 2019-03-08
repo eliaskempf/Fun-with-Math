@@ -88,7 +88,7 @@ namespace la {
 
 	template<typename T>
 	double vector<T>::length() const {
-		if constexpr (std::is_arithmetic<T>::value) {
+		if constexpr (std::is_arithmetic_v<T>) {
 			return std::sqrt((*this) * (*this));
 		}
 		else {
