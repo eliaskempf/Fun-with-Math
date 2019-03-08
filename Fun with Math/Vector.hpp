@@ -19,7 +19,7 @@ namespace la {
 
 	public:
 		// Constructors
-		explicit vector(size_t, T = 0) noexcept;
+		explicit vector(size_t, T = T(0)) noexcept;
 		vector(std::initializer_list<T>);
 		vector(const vector &) noexcept;
 		vector(vector &&) noexcept;
@@ -135,7 +135,7 @@ namespace la {
 	template<typename T>
 	T vector<T>::operator*(const vector<T> &other) const {
 		if (m_dimension != other.m_dimension) {
-			throw std::runtime_error("vectors can not differ in dimension.");
+			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
 		T scalar = 0;
@@ -174,7 +174,7 @@ namespace la {
 	template<typename T>
 	vector<T> vector<T>::operator+(const vector<T> &other) const {
 		if (m_dimension != other.m_dimension) {
-			throw std::runtime_error("vectors can not differ in dimension.");
+			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
 		vector<T> v(m_dimension);
@@ -185,7 +185,7 @@ namespace la {
 	template<typename T>
 	vector<T> vector<T>::operator-(const vector<T> &other) const {
 		if (m_dimension != other.m_dimension) {
-			throw std::runtime_error("vectors can not differ in dimension.");
+			throw std::runtime_error("Vectors can not differ in dimension.");
 		}
 
 		vector<T> v(m_dimension);

@@ -75,7 +75,7 @@ namespace la {
 	matrix<T>::matrix(size_t rows, size_t cols, T defVal)
 		: m_cols(cols), m_rows(rows) {
 		if (m_cols == 0 || m_rows == 0) {
-			throw std::logic_error("matrix does not allow zero dimensions.");
+			throw std::logic_error("Matrix does not allow zero dimensions.");
 		}
 
 		m_entries = new T[rows * cols];
@@ -188,7 +188,7 @@ namespace la {
 	template<typename T>
 	T matrix<T>::det() const {
 		if (m_cols != m_rows) {
-			throw std::logic_error("matrix has to be quadratic.");
+			throw std::logic_error("Matrix has to be quadratic.");
 		}
 
 		if (m_cols <= 2) {
