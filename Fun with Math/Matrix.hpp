@@ -24,7 +24,9 @@ namespace la {
 		// This is an intern version for the gauss algorithm that also yields
 		// information for the determinant calculation
 		std::pair<matrix, T> gauss_intern() const
-			/* noexcept(std::is_nothrow_copy_constructible<matrix<T>>::value) */;
+			noexcept(std::is_nothrow_default_constructible_v<T>);
+
+		friend class vector<T>;
 
 	public:
 		// Constructors
@@ -34,8 +36,6 @@ namespace la {
 		// Construct matrix with dimensions and optional default value
 		matrix(size_t, size_t, T = T(0))
 			noexcept(std::is_nothrow_default_constructible_v<T>);
-		// Constructor for vector intialization
-		matrix(std::initializer_list<T>, bool) noexcept;
 		// Constructor for std::initializer_list
 		// Throws std::invalid_argument if inner lists differ in size
 		matrix(std::initializer_list<std::initializer_list<T>>);
@@ -57,9 +57,9 @@ namespace la {
 		T determinant() const;
 		matrix transpose() const;
 		matrix gauss() const
-			noexcept(noexcept(gauss_intern)/*std::is_nothrow_copy_constructible_v<matrix<T>>*/);
+			noexcept(std::is_nothrow_default_constructible_v<T>);
 		matrix gauss_jordan() const
-			/* noexcept(std::is_nothrow_copy_constructible_v<matrix<T>>) */;
+			noexcept(std::is_nothrow_default_constructible_v<T>);
 		matrix invert() const;
 
 		// Static methods
@@ -120,15 +120,6 @@ namespace la {
 
 		m_entries = new T[rows * cols];
 		std::fill(m_entries, m_entries + (rows * cols), defVal);
-	}
-
-	template<typename T>
-	matrix<T>::matrix(std::initializer_list<T> list, bool mode) noexcept {
-		m_entries = new T[list.size()];
-		m_cols = mode ? list.size() : 1;
-		m_rows = mode ? 1 : list.size();
-		std::move(list.begin(), list.end(),
-			stdext::checked_array_iterator<T*>(m_entries, list.size()));
 	}
 
 	template<typename T>
@@ -228,7 +219,7 @@ namespace la {
 	// Return the gauss transformed matrix
 	template<typename T>
 	matrix<T> matrix<T>::gauss() const
-		noexcept(noexcept(gauss_intern)/*std::is_nothrow_copy_constructible_v<matrix<T>>*/) {
+		noexcept(std::is_nothrow_default_constructible_v<T>) {
 		// Just a public wrapper for the intern gauss algorithm that also return
 		// addtional information for determinant calculation
 		return gauss_intern().first;
@@ -238,7 +229,7 @@ namespace la {
 	// factor for determinant calculation
 	template<typename T>
 	std::pair<matrix<T>, T> matrix<T>::gauss_intern() const
-		/* noexcept(std::is_nothrow_copy_constructible_v<matrix<T>>) */ {
+		noexcept(std::is_nothrow_default_constructible_v<T>) {
 		// Create a working copy of the matrix
 		matrix<T> m(*this);
 		// Correction factor
@@ -287,7 +278,7 @@ namespace la {
 	// Return gauss-jordan transformed matrix
 	template<typename T>
 	matrix<T> matrix<T>::gauss_jordan() const
-		/* noexcept(std::is_nothrow_copy_constructible_v<matrix<T>>) */ {
+		noexcept(std::is_nothrow_default_constructible_v<T>) {
 		// Do normal gauss first
 		matrix<T> m = gauss_intern().first;
 
@@ -597,8 +588,8 @@ namespace la {
 	template<typename T>
 	std::ostream& operator<<(std::ostream &os, const matrix<T> &m) {
 		if constexpr (std::is_arithmetic_v<T>) {
-			T max = 0;
-			T fMax = 0;
+			T max(0);
+			T fMax(0);
 			bool firstCol = false;
 			for (size_t i = 0; i < m.rows(); i++) {
 				for (size_t j = 0; j < m.columns(); j++) {
