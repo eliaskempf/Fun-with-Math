@@ -50,6 +50,8 @@ namespace la {
 		T& operator[](size_t);
 
 		// Arithmetic operators
+		// All arithmetic operations throw if the operations are mathematically
+		// not well-defined
 		T operator*(const vector &) const;
 		vector operator*(const matrix<T> &) const;
 		vector operator*(const T &) const
@@ -78,10 +80,10 @@ namespace la {
 		bool operator!=(const vector &) const noexcept;
 	};
 
-
 	// Allow for both-sided multiplication by constant
 	template<typename U, typename T>
-	vector<T> operator*(const U &, const vector<T> &);
+	vector<T> operator*(const U &, const vector<T> &)
+		noexcept(std::is_nothrow_constructible_v<vector<T>, size_t>);
 
 	// Allow vector to be printed
 	template<typename T>
@@ -322,7 +324,8 @@ namespace la {
 
 	// Allow left handed multiplication by constant
 	template<typename U, typename T>
-	vector<T> operator*(const U &lhs, const vector<T> &v) {
+	vector<T> operator*(const U &lhs, const vector<T> &v)
+		noexcept(std::is_nothrow_constructible_v<vector<T>, size_t>) {
 		return v * lhs;
 	}
 

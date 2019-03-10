@@ -74,6 +74,8 @@ namespace la {
 		T& operator()(size_t, size_t);
 
 		// Arithmetic operators
+		// All arithmetic operations throw if the operations are mathematically
+		// not well-defined
 		matrix operator*(const matrix &) const;
 		vector<T> operator*(const vector<T> &) const;
 		matrix operator*(const T &) const
@@ -103,13 +105,16 @@ namespace la {
 		bool operator!=(const matrix &) const noexcept;
 	};
 
+	// Allow both-sided multiplication by constant
 	template<typename U, typename T>
 	matrix<T> operator*(const U &, const matrix<T> &)
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>);
 
+	// Allow matrices to be printed
 	template<typename T>
 	std::ostream& operator<<(std::ostream &, const matrix<T> &);
 
+	// Create matrix with given dimensions and optional default value
 	template<typename T>
 	matrix<T>::matrix(size_t rows, size_t cols, T defVal)
 		noexcept(std::is_nothrow_default_constructible_v<T>)
@@ -122,6 +127,7 @@ namespace la {
 		std::fill(m_entries, m_entries + (rows * cols), defVal);
 	}
 
+	// Create matrix from intializer_lists
 	template<typename T>
 	matrix<T>::matrix(std::initializer_list<std::initializer_list<T>> list) {
 		for (const auto i : list) {
@@ -142,6 +148,7 @@ namespace la {
 		}
 	}
 
+	// Copy constructor
 	template<typename T>
 	matrix<T>::matrix(const matrix<T> &other)
 		noexcept(std::is_nothrow_default_constructible_v<T>) {
@@ -152,6 +159,7 @@ namespace la {
 			stdext::checked_array_iterator<T*>(m_entries, entries()));
 	}
 
+	// Move constructor
 	template<typename T>
 	matrix<T>::matrix(matrix<T> &&other) noexcept {
 		m_rows = other.m_rows;
@@ -160,21 +168,25 @@ namespace la {
 		other.m_entries = nullptr;
 	}
 
+	// Destructor
 	template<typename T>
 	matrix<T>::~matrix() {
 		delete[] m_entries;
 	}
 
+	// Getter for rows
 	template<typename T>
 	size_t matrix<T>::rows() const {
 		return m_rows;
 	}
 
+	// Getter for columns
 	template<typename T>
 	size_t matrix<T>::columns() const {
 		return m_cols;
 	}
 
+	// Getter for amount of entries
 	template<typename T>
 	size_t matrix<T>::entries() const {
 		return m_rows * m_cols;
@@ -366,24 +378,30 @@ namespace la {
 		return m;
 	}
 
+	// Access elements of matrix by value
 	template<typename T>
 	T matrix<T>::operator()(size_t i, size_t j) const {
+		// Check for valid argument
 		if (i >= m_rows || j >= m_cols) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
 		return m_entries[i * m_cols + j];
 	}
 
+	// Access elements of matrix by reference
 	template<typename T>
 	T& matrix<T>::operator()(size_t i, size_t j) {
+		// Check for valid argument
 		if (i >= m_rows || j >= m_cols) {
 			throw std::out_of_range("Exceeded matrix range.");
 		}
 		return m_entries[i * m_cols + j];
 	}
 
+	// Multiply two matrices (may be multithreaded)
 	template<typename T>
 	matrix<T> matrix<T>::operator*(const matrix<T> &other) const {
+		// Check for valid argument
 		if (m_cols != other.m_rows) {
 			throw std::runtime_error("Can not multiply by a matrix which rows does not \
 				                      match the columns of the original matrix.");
@@ -442,8 +460,10 @@ namespace la {
 		return m;
 	}
 
+	// Multiply matrix by vector
 	template<typename T>
 	vector<T> matrix<T>::operator*(const vector<T> &other) const {
+		// Check for valid argument
 		if (m_cols != other.mDimension) {
 			throw std::runtime_error("Can not multiply by a vector which dimension does \
 									  not match the columns of the matrix.");
@@ -454,6 +474,7 @@ namespace la {
 		return v;
 	}
 
+	// Multiply matrix by constant
 	template<typename T>
 	matrix<T> matrix<T>::operator*(const T &other) const
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>) {
@@ -464,6 +485,7 @@ namespace la {
 		return m;
 	}
 
+	// Divide matrix by constant
 	template<typename T>
 	matrix<T> matrix<T>::operator/(const T &other) const
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>) {
@@ -474,8 +496,10 @@ namespace la {
 		return m;
 	}
 
+	// Add two matrices
 	template<typename T>
 	matrix<T> matrix<T>::operator+(const matrix<T> &other) const {
+		// Check for valid argument
 		if (m_rows != other.m_rows || m_cols != other.m_cols) {
 			throw std::runtime_error("Dimensions of matrices can not differ from each other.");
 		}
@@ -487,8 +511,10 @@ namespace la {
 		return m;
 	}
 
+	// Subtract two matrices
 	template<typename T>
 	matrix<T> matrix<T>::operator-(const matrix<T> &other) const {
+		// Check for valid argument
 		if (m_rows != other.m_rows || m_cols != other.m_cols) {
 			throw std::runtime_error("Dimensions of matrices can not differ from each other.");
 		}
@@ -500,12 +526,14 @@ namespace la {
 		return m;
 	}
 
+	// Multiply two matrices and assign result to *this
 	template<typename T>
 	matrix<T>& matrix<T>::operator*=(const matrix<T> &other) {
 		*this = *this * other;
 		return *this;
 	}
 
+	// Multiply matrix by constant and assign result to *this
 	template<typename T>
 	matrix<T>& matrix<T>::operator*=(const T &other)
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>) {
@@ -513,6 +541,7 @@ namespace la {
 		return *this;
 	}
 
+	// Divide matrix by constant and assign result to *this
 	template<typename T>
 	matrix<T>& matrix<T>::operator/=(const T &other)
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>) {
@@ -520,18 +549,21 @@ namespace la {
 		return *this;
 	}
 
+	// Add two matrices and assign result to *this
 	template<typename T>
 	matrix<T>& matrix<T>::operator+=(const matrix<T> &other) {
 		*this = *this + other;
 		return *this;
 	}
 
+	// Subtract two matrices and assign result to *this
 	template<typename T>
 	matrix<T>& matrix<T>::operator-=(const matrix<T> &other) {
 		*this = *this - other;
 		return *this;
 	}
 
+	// Copy assignment operator
 	template<typename T>
 	matrix<T>& matrix<T>::operator=(const matrix<T> &other)
 		noexcept(std::is_nothrow_default_constructible_v<T>) {
@@ -548,6 +580,7 @@ namespace la {
 		return *this;
 	}
 
+	// Move assignment operator
 	template<typename T>
 	matrix<T>& matrix<T>::operator=(matrix<T> &&other) noexcept {
 		if (this != &other) {
@@ -560,6 +593,7 @@ namespace la {
 		return *this;
 	}
 
+	// Check two matrices for equality
 	template<typename T>
 	bool matrix<T>::operator==(const matrix &other) const noexcept {
 		if (m_rows != other.m_rows || m_cols != other.m_cols) { return false; }
@@ -571,13 +605,14 @@ namespace la {
 		return true;
 	}
 
+	// Check two matrices for inequality
 	template<typename T>
 	bool matrix<T>::operator!=(const matrix &other) const noexcept {
 		if (*this == other) { return false; }
 		return true;
 	}
 
-
+	// Allow left handed multiplication by constant
 	template<typename U, typename T>
 	matrix<T> operator*(const U &lhs, const matrix<T> &m) 
 		noexcept(std::is_nothrow_constructible_v<matrix<T>, size_t, size_t>) {
