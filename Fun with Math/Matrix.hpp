@@ -212,7 +212,7 @@ namespace la {
 			det *= gPair.first(i, i);
 		}
 
-		return det == 0 ? 0 : det;
+		return det == T(0) ? T(0) : det;
 	}
 
 	// Return the transposed matrix
@@ -338,7 +338,7 @@ namespace la {
 		}
 		// Make right section of h and identity matrix
 		for (size_t i = 0; i < h.m_rows; i++) {
-			h(i, i + h.m_rows) = 1;
+			h(i, i + h.m_rows) = T(1);
 		}
 
 		// Do gauss-jordan on h so the identity matrix will be on the left side now
@@ -426,7 +426,7 @@ namespace la {
 			futures[c] = std::async([c, rows, cols, colsPerThread, this, other, &m]() {
 				for (size_t i = 0; i < rows; i++) {
 					for (size_t k = c * colsPerThread; k < (c + 1) * colsPerThread; k++) {
-						T c_ik = 0;
+						T c_ik(0);
 						for (size_t j = 0; j < m_cols; j++) {
 							c_ik += m_entries[i * m_cols + j] * other.m_entries[j * other.m_cols + k];
 						}
@@ -438,7 +438,7 @@ namespace la {
 
 		for (size_t i = 0; i < rows; i++) {
 			for (size_t k = (amountOfThreads - 1) * colsPerThread; k < cols; k++) {
-				T c_ik = 0;
+				T c_ik(0);
 				for (size_t j = 0; j < m_cols; j++) {
 					c_ik += m_entries[i * m_cols + j] * other.m_entries[j * other.m_cols + k];
 				}

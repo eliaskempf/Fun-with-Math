@@ -53,7 +53,7 @@ namespace la {
 		// All arithmetic operations throw if the operations are mathematically
 		// not well-defined
 		T operator*(const vector &) const;
-		vector operator*(const matrix<T> &) const;
+		vector operator*(const matrix<T> &);
 		vector operator*(const T &) const
 			noexcept(std::is_nothrow_constructible_v<vector<T>, size_t>);
 		vector operator/(const T &) const
@@ -188,7 +188,7 @@ namespace la {
 
 	// Multiply vector by a matrix
 	template<typename T>
-	vector<T> vector<T>::operator*(const matrix<T> &other) const {
+	vector<T> vector<T>::operator*(const matrix<T> &other) {
 		// Check for valid argument
 		if (m_dimension != other.m_rows) {
 			throw std::runtime_error("Size of vector has to match rows \
@@ -197,15 +197,15 @@ namespace la {
 
 		// Create result vector
 		vector<T> v;
-		v.m_size = other.m_cols;
-		// Intern we only use row vectors so we temporarily transform it into a column
+		v.m_dimension = other.m_cols;
+		// Internally we only use row vectors so we temporarily transform it into a column
 		// vector for the calculation
 		m_matrix.m_cols = m_matrix.m_rows;
 		m_matrix.m_rows = 1;
 		// Now we can multiply them and adjust the dimensions accordingly
-		v.matrix = m_matrix * other;
-		v.matrix.m_rows = v.m_matrix.m_cols;
-		v.matrix.m_cols = 1;
+		v.m_matrix = m_matrix * other;
+		v.m_matrix.m_rows = v.m_matrix.m_cols;
+		v.m_matrix.m_cols = 1;
 		// And reverse the original values
 		m_matrix.m_rows = m_matrix.m_cols;
 		m_matrix.m_cols = 1;
