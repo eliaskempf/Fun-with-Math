@@ -3,71 +3,88 @@
 #include <iostream>
 
 namespace la {
-	class Complex {
+	class complex {
 	private:
 		double m_real = 0;
 		double m_img = 0;
 
 	public:
 		// Constructors
-		constexpr Complex() = default;
-		constexpr explicit Complex(double) noexcept;
-		constexpr Complex(double, double) noexcept;
-		constexpr Complex(const Complex &) = default;
+		constexpr complex() = default;
+		constexpr explicit complex(double) noexcept;
+		constexpr complex(double, double) noexcept;
+		constexpr complex(const complex &) = default;
+		constexpr complex(complex &&) = default;
 
 		// Member functions
 		double real() const;
 		double img() const;
 		double abs() const;
-		Complex conjugate() const;
+		complex conjugate() const;
 
 		// Overloaded operators
-		Complex operator*(double) const;
-		Complex operator*(const Complex &) const;
-		Complex operator/(double) const;
-		Complex operator/(const Complex &) const;
-		Complex operator+(double) const;
-		Complex operator+(const Complex &) const;
-		Complex operator-(double) const;
-		Complex operator-(const Complex &) const;
-		Complex& operator*=(double);
-		Complex& operator*=(const Complex &);
-		Complex& operator/=(double);
-		Complex& operator/=(const Complex &);
-		Complex& operator+=(double);
-		Complex& operator+=(const Complex &);
-		Complex& operator-=(double);
-		Complex& operator-=(const Complex &);
-		Complex& operator=(const Complex &);
-		Complex& operator=(Complex &&);
+
+		// Arithmetic operators
+		complex operator*(double) const;
+		complex operator*(const complex &) const;
+		complex operator/(double) const;
+		complex operator/(const complex &) const;
+		complex operator+(double) const;
+		complex operator+(const complex &) const;
+		complex operator-(double) const;
+		complex operator-(const complex &) const;
+		complex operator-() const;
+
+		// Assignment operators
+		complex& operator*=(double);
+		complex& operator*=(const complex &);
+		complex& operator/=(double);
+		complex& operator/=(const complex &);
+		complex& operator+=(double);
+		complex& operator+=(const complex &);
+		complex& operator-=(double);
+		complex& operator-=(const complex &);
+
+		// Copy assignment
+		complex& operator=(const complex &) = default;
+		// Move assignment
+		complex& operator=(complex &&) = default;
+
+		// Comparison operators
 		bool operator==(double) const;
-		bool operator==(const Complex &) const;
+		bool operator==(const complex &) const;
 		bool operator!=(double) const;
-		bool operator!=(const Complex &) const;
+		bool operator!=(const complex &) const;
 		bool operator<(double) const;
-		bool operator<(const Complex &) const;
+		bool operator<(const complex &) const;
 		bool operator>(double) const;
-		bool operator>(const Complex &) const;
+		bool operator>(const complex &) const;
 		bool operator<=(double) const;
-		bool operator<=(const Complex &) const;
+		bool operator<=(const complex &) const;
 		bool operator>=(double) const;
-		bool operator>=(const Complex &) const;
+		bool operator>=(const complex &) const;
 	};
 
-	Complex operator*(double, const Complex &);
-	Complex operator/(double, const Complex &);
-	Complex operator+(double, const Complex &);
-	Complex operator-(double, const Complex &);
-	std::ostream& operator<<(std::ostream &, const Complex &);
+	// Allow for operations for both side
+	complex operator*(double, const complex &);
+	complex operator/(double, const complex &);
+	complex operator+(double, const complex &);
+	complex operator-(double, const complex &);
+	std::ostream& operator<<(std::ostream &, const complex &);
 
-	constexpr Complex::Complex(double re) noexcept
+	// constexpr constructor for complex numbers with real part only
+	constexpr complex::complex(double re) noexcept
 		: m_real(re)
 	{}
 
-	constexpr Complex::Complex(double re, double im) noexcept
+	// constexpr constructor for complex numbers with real and imaginary part
+	constexpr complex::complex(double re, double im) noexcept
 		: m_real(re), m_img(im)
 	{}
 }
 
-la::Complex operator""_i(long double);
-la::Complex operator""_i(unsigned long long int);
+// User-defined literals for better readability
+la::complex operator""_i(long double);
+
+// User-defined literals for better readability
+la::complex operator""_i(uint64_t);

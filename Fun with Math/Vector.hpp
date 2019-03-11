@@ -42,6 +42,8 @@ namespace la {
 
 		// Calculate angle between vectors
 		double angle(const vector &) const;
+		// Check if two vectors are orthogonal
+		bool orthogonal(const vector &) const;
 
 		// Overloaded operators
 
@@ -148,9 +150,16 @@ namespace la {
 		return *this / norm;
 	}
 
+	// Calculate angle between two vectors
 	template<typename T>
 	double vector<T>::angle(const vector<T> &other) const {
 		return std::acos((*this * other) / (norm() * other.norm()));
+	}
+
+	// Check if two vectors are orthogonal
+	template<typename T>
+	bool vector<T>::orthogonal(const vector<T> &other) const {
+		return *this * other == T(0);
 	}
 
 	// Access elements of vector by value
