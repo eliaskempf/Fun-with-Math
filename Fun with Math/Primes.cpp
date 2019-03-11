@@ -4,12 +4,12 @@
 #include <map>
 
 
-bool isPrime(int n) {
+bool isPrime(uint64_t n) {
 	if (n < 2 || n == 4) {
 		return false;
 	}
 
-	for (int i = 2; i < n / 2; i++) {
+	for (size_t i = 2; i < n / 2; i++) {
 		if (n % i == 0) {
 			return false;
 		}
@@ -17,65 +17,73 @@ bool isPrime(int n) {
 	return true;
 }
 
-void fillPrimes(std::vector<int>& primes, int n) {
-	for (int i = 0; i <= n; i++) {
+void fillPrimes(std::vector<uint64_t>& primes, uint64_t n) {
+	for (size_t i = 0; i <= n; i++) {
 		if (isPrime(i)) {
 			primes.push_back(i);
 		}
 	}
 }
 
-void sieveOfEratosthenes(std::vector<int>& primes, int n) {
+void sieveOfEratosthenes(std::vector<uint64_t>& primes, uint64_t n) {
 	bool* arr = new bool [n];
 
-	for (int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		arr[i] = true;
 	}
 
-	int sqrtN = static_cast<int>(sqrt(n));
+	uint64_t sqrtN = static_cast<uint64_t>(std::sqrt(n));
 
-	for (int i = 2; i <= sqrtN; i++) {
+	for (size_t i = 2; i < sqrtN + 1; i++) {
 		if (arr[i]) {
-			for (int j = i * i; j < n; j += (i > 2 ? i * 2 : i)) {
+			for (size_t j = i * i; j < n; j += (i > 2 ? i * 2 : i)) {
 				arr[j] = false;
 			}
 		}
 	}
 
 	
-	for (int i = 0; i < n; i++) {
+	for (size_t i = 0; i < n; i++) {
 		if (arr[i]) {
 			primes.push_back(i);
 		}
 	}
 	
-	primes.erase(primes.begin());
-	primes.erase(primes.begin());
+	primes.erase(primes.begin(), primes.begin() + 2);
 
 	delete[] arr;
 }
 
-void primeFactorisation(int n) {
-	int num = n;
-	std::map<int, int> primeFactors;
-	std::map<int, int>::iterator factor;
-	std::vector<int> primes;
+void primeFactorisation(uint64_t n) {
+	uint64_t num = n;
+	std::map<uint64_t, uint64_t> primeFactors;
+	std::vector<uint64_t> primes;
 
 	sieveOfEratosthenes(primes, num / 2);
 
-	for (auto i = primes.end(); i >= primes.begin(); i--) {
+	for (auto i = primes.end() - 1; i > primes.begin(); i--) {
 		while (num % *i == 0) {
 			num /= *i;
-			factor = primeFactors.find(*i);
+			auto factor = primeFactors.find(*i);
 			if (factor != primeFactors.end()) {
 				factor->second++;
 			}
 			else {
-				primeFactors.insert(std::pair<int, int>(*i, 1));
+				primeFactors.insert(std::make_pair(*i, 1));
 			}
 		}
 	}
-	
+
+	while (num != 1) {
+		num /= 2;
+		auto factor = primeFactors.find(2);
+		if (factor != primeFactors.end()) {
+			factor->second++;
+		}
+		else {
+			primeFactors.insert(std::make_pair(2, 1));
+		}
+	}
 
 	std::cout << "Prime factorisation of " << n << " := " << std::flush;
 

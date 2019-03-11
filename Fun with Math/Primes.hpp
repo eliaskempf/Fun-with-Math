@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 
-bool isPrime(int);
+bool isPrime(uint64_t);
 
-void fillPrimes(std::vector<int>&, int);
+void fillPrimes(std::vector<uint64_t>&, uint64_t);
 
-void sieveOfEratosthenes(std::vector<int>&, int);
+void sieveOfEratosthenes(std::vector<uint64_t>&, uint64_t);
 
-void primeFactorisation(int);
+void primeFactorisation(uint64_t);
